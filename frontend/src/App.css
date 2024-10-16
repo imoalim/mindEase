@@ -1,38 +1,70 @@
-.App {
+/* Allgemeine Seiteinstellungen */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f7ff;
+  margin: 0;
+  padding: 0;
+}
+
+.hero-section {
+  background-color: #e6f3ff;
+  padding: 50px 0;
+}
+
+.hero-title {
+  font-weight: bold;
+  color: #00a0e1;
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+}
+
+.features {
+  margin-top: 30px;
+}
+
+.feature-card {
   text-align: center;
+  padding: 20px;
+  box-shadow: none;
+  border: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.feature-icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.stats-section {
+  background-color: #ffffff;
+  text-align: center;
+    margin-top: -70px; /* Negativer Wert, um den Abstand zu verringern */
+    padding: 20px 0; /* Optional, um etwas Padding zu geben */
+
+
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.appointment-section {
+  background-color: #f0f7ff;
+  padding: 50px 0;
 }
 
-.App-link {
-  color: #61dafb;
+.footer {
+  background-color: #00a0e1;
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
+  margin-top: 50px;
+}
+.psychologistImage {
+  max-width: 100%; /* Damit das Bild responsiv bleibt */
+  height: auto;    /* Beibehaltung des Seitenverhältnisses */
+  display: block;  /* Verhindert, dass das Bild inline behandelt wird */
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
+

@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
-import logo from '../pictures/logo.png'; // Korrigierter Pfad zum Logo
+import { Link } from 'react-router-dom';  // Für die Navigation zwischen Seiten
+import logo from '../pictures/logo.png';  // Pfad zu deinem Logo
 
 const NavBar = () => {
     return (
@@ -10,10 +11,10 @@ const NavBar = () => {
                 <Typography variant="h6" style={{ flexGrow: 1 }}>
                     MindEase
                 </Typography>
-                <Button color="inherit">Home</Button>
-                <Button color="inherit">Therapy Services</Button>
-                <Button color="inherit">Self-Assessment</Button>
-                <Button color="inherit">Resources</Button>
+                <Button color="inherit" component={Link} to="/">Home</Button>
+                <Button color="inherit" component={Link} to="/therapy-services">Therapy Services</Button>
+                <Button color="inherit" component={Link} to="/self-assessment">Self-Assessment</Button>
+                <Button color="inherit" component={Link} to="/resources">Resources</Button>
             </Toolbar>
         </AppBar>
     );
