@@ -4,16 +4,17 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: mindease_db
+      POSTGRES_USER: mindease_user
+      POSTGRES_PASSWORD: mindease_password
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the init.sql script
     ports:
       - "5432:5432"
 
+
   app:
-    image: your-java-app-image
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,9 +23,25 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_DATABASE}
-      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mindease_db
+      SPRING_DATASOURCE_USERNAME: mindease_user
+      SPRING_DATASOURCE_PASSWORD: mindease_password
+      SPRING_JPA_SHOW_SQL: "false"  # Boolean values must be passed as strings in environment
+    volumes:
+      - ./target/mindEase-0.0.1-SNAPSHOT.jar:/app/app.jar
+    command: ["java", "-jar", "/app/app.jar"]
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    command: ["npm", "start"]
+    depends_on:
+      - app
 
 volumes:
   db_data:
