@@ -1,4 +1,4 @@
-package com.example.mindEase;
+package com.example.mindEase.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;

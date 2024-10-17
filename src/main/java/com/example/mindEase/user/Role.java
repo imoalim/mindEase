@@ -1,4 +1,4 @@
-package com.example.mindEase;
+package com.example.mindEase.user;
 
 public enum Role {
     USER,
