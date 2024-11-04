@@ -4,9 +4,10 @@ import NavBar from './NavBar'; // Dein Navbar-Component importieren
 import '../App.css'; // CSS-Datei importieren
 
 // Bilder importieren
-import heroImage from '../pictures/heroImage.png'; // Bild der Frau auf der rechten Seite
+import heroImage from '../pictures/heroImage.png'; // Bild auf der rechten Seite
 import icon1 from '../pictures/icon1.png'; // Beispiel für alle Icons
 import psychologistImage from '../pictures/hero.jpg'; // Hier das neue Bild importieren
+import image1 from '../pictures/image1.png'; //
 
 const HomePage = () => {
     return (
@@ -22,7 +23,7 @@ const HomePage = () => {
                             <Grid container spacing={2} className="features">
                                 <Grid item xs={6} md={3}>
                                     <Card className="feature-card">
-                                        <img src={icon1} alt="Book a Video Call" className="feature-icon" />
+                                        <img src={image1} alt="Book a Video Call" className="feature-icon" />
                                         <Typography variant="h6">Book a Video Call</Typography>
                                     </Card>
                                 </Grid>
