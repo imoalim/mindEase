@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import TherapyServices from './components/TherapyServices'; // Stelle sicher, dass die Datei existiert
-// Importiere andere Seiten hier...
+// Importiere andere Seiten hier... TEST TEST
 
 const App = () => {
     return (
