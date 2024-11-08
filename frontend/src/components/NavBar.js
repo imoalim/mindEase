@@ -1,9 +1,17 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
-import { Link } from 'react-router-dom';  // Für die Navigation zwischen Seiten
-import logo from '../pictures/logo.png';  // Pfad zu deinem Logo
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../pictures/logo.png';
 
 const NavBar = () => {
+    const navigate = useNavigate();
+    const isLoggedIn = !!localStorage.getItem('token');
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/login');
+    };
+
     return (
         <AppBar position="static" style={{ backgroundColor: '#87CEEB' }}>
             <Toolbar>
@@ -15,6 +23,11 @@ const NavBar = () => {
                 <Button color="inherit" component={Link} to="/therapy-services">Therapy Services</Button>
                 <Button color="inherit" component={Link} to="/self-assessment">Self-Assessment</Button>
                 <Button color="inherit" component={Link} to="/resources">Resources</Button>
+                {isLoggedIn ? (
+                    <Button color="inherit" onClick={handleLogout}>Logout</Button>
+                ) : (
+                    <Button color="inherit" component={Link} to="/login">Login</Button>
+                )}
             </Toolbar>
         </AppBar>
     );
