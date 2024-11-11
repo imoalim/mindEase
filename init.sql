@@ -1,7 +1,6 @@
 -- create the database/schema
 CREATE TABLE IF NOT EXISTS Users (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     userRole VARCHAR(50) NOT NULL
 );
