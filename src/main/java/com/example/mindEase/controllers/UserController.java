@@ -1,6 +1,7 @@
-package com.example.mindEase.user;
+package com.example.mindEase.controllers;
 
 import com.example.mindEase.service.UserService;
+import com.example.mindEase.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
