@@ -22,14 +22,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Username is mandatory")
-    @Length(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
-    private String username;
-
     @NotNull
     @Email
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private Role role;  // E.g., USER, THERAPIST
+    private Role userRole;  // E.g., USER, THERAPIST
+
+    public User(String email) {
+        this.email = email;
+        this.userRole = Role.USER;
+    }
 }
