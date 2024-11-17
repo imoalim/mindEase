@@ -62,3 +62,74 @@ body {
   display: block;
 
 }
+
+.resources-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.resources-title {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.resources-subtitle {
+  text-align: center;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.exercise-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  width: 300px;
+  background-color: #f9f9f9;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.exercise-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.exercise-type {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.exercise-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.exercise-steps {
+  text-align: left;
+  flex-grow: 1;
+}
+
+.exercise-step {
+  font-size: 1.1em;
+  margin: 5px 0;
+}
+
+.resources-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  align-items: stretch;
+}
