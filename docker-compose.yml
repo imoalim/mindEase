@@ -27,7 +27,7 @@ services:
 
   app:
     build:
-      context: ./backend
+      context: .
     container_name: dms_server
     ports:
       - "8080:8080"

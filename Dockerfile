@@ -1,11 +1,27 @@
-# Wähle das Base Image
-FROM openjdk:17-jdk-slim
+# Use an official Maven image to build the project
+FROM maven:3.8.4-openjdk-17 AS build
 
-# Setze das Arbeitsverzeichnis im Container
+# Set the working directory
 WORKDIR /app
 
-# Kopiere die JAR-Datei in das Arbeitsverzeichnis
-COPY target/mindEase-0.0.1-SNAPSHOT.jar app.jar
+# Copy the pom.xml and source code
+COPY ../pom.xml .
+COPY ../src ./src
 
-# Definiere den Befehl, um die Anwendung auszuführen
+# Package the application
+RUN mvn clean package -DskipTests
+
+# Use the openjdk image to run the app
+FROM openjdk:17-jdk-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the jar file from the build stage
+COPY --from=build /app/target/mindEase-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose the application port
+EXPOSE 8080
+
+# Run the Spring Boot application
 ENTRYPOINT ["java", "-jar", "app.jar"]
