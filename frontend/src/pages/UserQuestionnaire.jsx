@@ -46,7 +46,11 @@ const Questionnaire = () => {
         } else {
             setError(false);
             console.log("Submitted Responses:", responses);
-            navigate("/")
+            navigate("/suggestions", {
+                state: {
+                    responses,
+                },
+            });
         }
     };
 
