@@ -35,4 +35,44 @@ public class UserService {
         }
         return false;
     }
+
+    public User registerUser(User user) {
+        // Basisprüfung: Ist die E-Mail bereits registriert?
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email is already registered.");
+        }
+
+        // Validierung und spezielle Anforderungen basierend auf der Rolle
+        switch (user.getUserRole()) {
+            case THERAPIST:
+                if (user.getDocumentPath() == null || user.getDocumentPath().isEmpty()) {
+                    throw new IllegalArgumentException("Therapists must upload qualification documents.");
+                }
+                user.setVerified(false); // Verifikation durch Admin erforderlich
+                break;
+
+            case PSYCHOLOGY_STUDENT:
+                if (user.getVerificationAnswers() == null || user.getVerificationAnswers().isEmpty()) {
+                    throw new IllegalArgumentException("Psychology Students must provide answers for verification.");
+                }
+                user.setVerified(false); // Verifikation durch Admin erforderlich
+                break;
+
+            default: // Normale Benutzer
+                user.setVerified(true); // Direkt aktiv
+                break;
+        }
+
+        // Passwort-Hashing (z.B. BCrypt)
+        user.setPassword(hashPassword(user.getPassword()));
+
+        // Benutzer speichern
+        return userRepository.save(user);
+    }
+
+    private String hashPassword(String password) {
+        // Verwende eine Sicherheitsbibliothek wie BCrypt zum Hashen
+        return password; // Placeholder für das Beispiel
+    }
+
 }

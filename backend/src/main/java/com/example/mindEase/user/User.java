@@ -23,11 +23,31 @@ public class User {
     @Email
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Role userRole;  // E.g., USER, THERAPIST
+    @NotNull
+    private String password;
 
-    public User(String email) {
-        this.email = email;
-        this.userRole = Role.USER;
+    @NotNull
+    private String firstName;
+
+    @NotNull
+    private String lastName;
+
+    @NotNull
+    private String age;
+
+    @NotNull
+    private String location;
+
+    @Enumerated(EnumType.STRING)
+    private Role userRole;
+
+    private boolean verified; // Ob der Benutzer verifiziert ist
+
+    @Lob
+    private String verificationAnswers; // Für Psychology Students: JSON oder Text
+
+    private String documentPath; // Für Therapists: Pfad zum hochgeladenen Dokument
+
+    public <A> User(A email) {
     }
 }
