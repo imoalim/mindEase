@@ -35,4 +35,8 @@ public class UserService {
         }
         return false;
     }
+
+    public void saveUserEmotionalStateQuestionnaire(){
+
+    }
 }

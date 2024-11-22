@@ -12,6 +12,7 @@ import {
     Alert
 } from '@mui/material';
 import NavBar from '@/Components/NavBar'
+import '../css/Questionnaire.css'
 
 const questions = [
     { id: 25, text: "Sudden attacks of panic with palpitations, shortness of breath, faintness, or other frightening bodily sensations" },
@@ -56,46 +57,48 @@ const Questionnaire = () => {
 
     return (
         <>
-        <NavBar />
-        <Container maxWidth="sm" sx={{ mt: 5 }}>
-            <Typography variant="h4" gutterBottom align="center">
-                Feelings Questionnaire
-            </Typography>
-            {error && (
-                <Alert severity="error" sx={{ mb: 3 }}>
-                    Please answer all questions before submitting!
-                </Alert>
-            )}
-            {questions.map((question) => (
-                <Box key={question.id} sx={{ mb: 3 }}>
-                    <Typography variant="body1" sx={{ mb: 1 }}>
-                        {question.id}. {question.text}
-                    </Typography>
-                    <FormControl component="fieldset" required={true}>
-                        <RadioGroup
-                            row
-                            value={responses[question.id] || ""}
-                            onChange={(e) => handleResponseChange(question.id, parseInt(e.target.value))}
+            <NavBar />
+            <Container className='formstyle' maxWidth="sm" sx={{ mt: 5 }}>
+                <Typography variant="h4" gutterBottom align="center">
+                    <strong>
+                    Feelings Questionnaire
+                    </strong>
+                </Typography>
+                {error && (
+                    <Alert severity="error" sx={{ mb: 3 }}>
+                        Please answer all questions before submitting!
+                    </Alert>
+                )}
+                {questions.map((question) => (
+                    <Box key={question.id} sx={{ mb: 3 }}>
+                        <Typography variant="body1" sx={{ mb: 1, fontWeight: 600 }}>
+                            {question.id}. {question.text}
+                        </Typography>
+                        <FormControl className='formtext' component="fieldset" required={true}>
+                            <RadioGroup
+                                row
+                                value={responses[question.id] !== undefined ? responses[question.id] : ""}
+                                onChange={(e) => handleResponseChange(question.id, parseInt(e.target.value))}
+                            >
+                                {[0, 1, 2, 3, 4].map((value) => (
+                                    <FormControlLabel
+                                        key={value}
+                                        value={value}
+                                        control={<Radio />}
+                                        label={value.toString()}
+                                    />
+                                ))}
+                            </RadioGroup>
 
-                        >
-                            {[0, 1, 2, 3, 4].map((value) => (
-                                <FormControlLabel
-                                    key={value}
-                                    value={value}
-                                    control={<Radio />}
-                                    label={value.toString()}
-                                />
-                            ))}
-                        </RadioGroup>
-                    </FormControl>
+                        </FormControl>
+                    </Box>
+                ))}
+                <Box sx={{ textAlign: 'center', mt: 4 }}>
+                    <Button variant="contained" sx={{backgroundColor:"#87CEEB"}} size="large" onClick={handleSubmit}>
+                        Submit
+                    </Button>
                 </Box>
-            ))}
-            <Box sx={{ textAlign: 'center', mt: 4 }}>
-                <Button variant="contained" color="primary" onClick={handleSubmit}>
-                    Submit
-                </Button>
-            </Box>
-        </Container>
+            </Container>
         </>
     );
 };
