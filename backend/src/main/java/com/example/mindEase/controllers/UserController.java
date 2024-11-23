@@ -2,6 +2,7 @@ package com.example.mindEase.controllers;
 
 import com.example.mindEase.service.UserService;
 import com.example.mindEase.user.User;
+import com.example.mindEase.user.UserQuestionnaire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,5 +60,12 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/questionnaire")
+    public ResponseEntity<Long> saveQuestionnaire(@RequestBody UserQuestionnaire userQuestionnaire)
+    {
+        Long response = userService.saveUserEmotionalStateQuestionnaire(userQuestionnaire);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

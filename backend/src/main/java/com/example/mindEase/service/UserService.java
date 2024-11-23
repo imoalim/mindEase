@@ -1,6 +1,8 @@
 package com.example.mindEase.service;
 
 import com.example.mindEase.user.User;
+import com.example.mindEase.user.UserQuestionnaire;
+import com.example.mindEase.user.UserQuestionnaireRepository;
 import com.example.mindEase.user.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserQuestionnaireRepository userQuestionnaireRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserQuestionnaireRepository userQuestionnaireRepository) {
         this.userRepository = userRepository;
+        this.userQuestionnaireRepository = userQuestionnaireRepository;
     }
 
     public User saveUser(User user) {
@@ -36,7 +40,16 @@ public class UserService {
         return false;
     }
 
-    public void saveUserEmotionalStateQuestionnaire(){
+    public Long saveUserEmotionalStateQuestionnaire(UserQuestionnaire userQuestionnaire){
+        //exception handling  if the user doesnt exist
+//        if(userRepository.existsById(userQuestionnaire.getUser().getId()))
+//        {
+            UserQuestionnaire savedQuestionnaire = userQuestionnaireRepository.save(userQuestionnaire);
+            return savedQuestionnaire.getId();
+//        }else
+//        {
+//            throw exception... // it will be implemented
+//        }
 
     }
 }

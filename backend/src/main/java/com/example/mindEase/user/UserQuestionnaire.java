@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user_questionnaire")
+@Table(name = "userquestionnaire")
 @Data
 @Builder
 @NoArgsConstructor
@@ -43,4 +43,9 @@ public class UserQuestionnaire {
 
     @NotNull
     private String recommendation;
+
+    @OneToOne
+    //@NotNull
+    @JoinColumn(name = "user_id")
+    private User user;
 }

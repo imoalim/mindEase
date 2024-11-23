@@ -1,4 +1,8 @@
 package com.example.mindEase.user;
 
-public interface UserQuestionnaireRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+public interface UserQuestionnaireRepository extends JpaRepository<UserQuestionnaire, Long> {
+
 }
