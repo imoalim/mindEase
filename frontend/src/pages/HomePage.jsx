@@ -251,8 +251,21 @@ const HomePage = () => {
                         </Typography>
                     </div>
                 </Slider>
-            </div>
 
+
+            </div>
+            <div className="appointment-booking-section">
+                {/* Beschreibung für die Terminbuchung */}
+                <Typography variant="body1" className="appointment-info">
+                    Easily book your session online with just a few clicks. Start your journey to better mental health
+                    today!
+                </Typography>
+
+                {/* Button für die Terminbuchung */}
+                <a href="/appointment-page" className="appointment-button">
+                    Book Now
+                </a>
+            </div>
 
             <div className="footer">
                 <Typography variant="body1" align="center">
