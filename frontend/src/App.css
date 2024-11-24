@@ -371,103 +371,103 @@ body {
 .slider-container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Zentriert den Inhalt horizontal */
-  justify-content: center; /* Zentriert den Inhalt vertikal */
+  align-items: center; /* Zentriert horizontal */
+  justify-content: center; /* Zentriert vertikal */
   position: relative;
+  width: 100%;
+  max-width: 1000px; /* Maximalbreite */
   margin: 0 auto;
-  width: 100%; /* Volle Breite */
-  height: auto; /* Automatische Höhe basierend auf Inhalt */
-  padding: 100px 20px;
+  padding: 50px 20px;
+  box-sizing: border-box;
+  overflow: hidden; /* Kein Scrollen */
 }
 
-/* Überschrift Stil */
+/* Überschrift */
 .slider-heading {
-  font-size: 2.5rem; /* Größerer Text */
-  font-weight: bold; /* Dickere Schrift */
-  font-family: 'Roboto', sans-serif; /* Schöne Schriftart */
-  text-align: center; /* Zentriert */
-  margin-bottom: 50px; /* Abstand zum Slider */
-  color: #333; /* Dezente dunkle Farbe */
+  font-size: 2.5rem; /* Größere Überschrift */
+  font-weight: 900; /* Dickere Schrift */
+  color: #00a0e1; /* Blau passend zur Farbpalette */
+  margin-bottom: 20px; /* Weniger Abstand zur Unterüberschrift */
+  margin-top: 250px;
 }
-
-/* Slider selbst */
+/* Slider */
 .slick-slider {
   width: 100%;
-  max-width: 1000px; /* Größere Breite */
-  height: 500px; /* Höhere Slides */
+  max-width: 800px; /* Breite des Sliders */
   margin: 0 auto;
   position: relative;
 }
 
-/* Die einzelnen Slider Cards */
+/* Einzelne Slides */
 .slick-slide {
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center; /* Zentriert Text und Bilder */
+  flex-direction: column; /* Bild und Text untereinander */
+  text-align: center;
 }
 
-/* Slider Images */
+/* Slider-Bilder */
 .slider-image {
   width: 100%;
-  max-width: 800px; /* Einheitliche Breite */
-  height: 400px; /* Einheitliche Höhe */
-  object-fit: cover; /* Skaliert proportional */
-  border-radius: 10px; /* Abgerundete Ecken */
+  max-width: 7000px;
+  height: 400px; /* Höhe */
+  object-fit: cover;
+  border-radius: 10px;
   margin-bottom: 20px;
-}
+  margin-top: 40px;}
 
-/* Slider Beschreibung */
+/* Beschreibung */
 .slider-description {
-  font-size: 1.3rem; /* Angenehme Lesbarkeit */
-  color: #555; /* Dezente Farbe */
-  max-width: 800px; /* Begrenzte Breite für die Beschreibung */
-  line-height: 1.6; /* Angenehmer Zeilenabstand */
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 700px;
+  line-height: 1.5;
 }
 
 /* Punktnavigation */
 .slick-dots {
   position: absolute;
-  bottom: -50px; /* Abstand unterhalb des Sliders */
+  bottom: -40px; /* Position unterhalb des Sliders */
   display: flex;
-  justify-content: center; /* Zentriert Punkte horizontal */
+  justify-content: center; /* Punkte zentrieren */
+  gap: 10px; /* Abstand zwischen Punkten */
   list-style: none;
   padding: 0;
   margin: 0;
-  gap: 10px; /* Abstand zwischen Punkten */
 }
 
 .slick-dots li button {
-  width: 15px; /* Größere Punkte */
-  height: 15px;
-  border: none;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background-color: #ccc; /* Inaktive Punktfarbe */
+  background-color: #ccc; /* Standardfarbe */
+  border: none;
   cursor: pointer;
 }
 
 .slick-dots li.slick-active button {
-  background-color: #00a0e1; /* Aktive Punktfarbe */
+  background-color: #00a0e1; /* Farbe für aktiven Punkt */
 }
 
 /* Navigationspfeile */
 .slick-prev, .slick-next {
-  z-index: 1;
-  color: white;
   font-size: 2rem;
-  background-color: rgba(0, 0, 0, 0.5); /* Halbtransparente Hintergrundfarbe */
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
   border-radius: 50%;
-  padding: 10px;
+  z-index: 1;
+  padding: 5px;
 }
 
 .slick-prev {
-  left: -40px;
+  left: -50px; /* Abstand links */
 }
 
 .slick-next {
-  right: -40px;
+  right: -50px; /* Abstand rechts */
 }
+
 
 /* Punktnavigation */
 .slick-dots {
