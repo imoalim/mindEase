@@ -5,6 +5,23 @@ CREATE TABLE IF NOT EXISTS Users (
     userRole VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS UserQuestionnaire (
+    id SERIAL PRIMARY KEY,
+    q2 INT NOT NULL,
+    q20 INT NOT NULL,
+    q22 INT NOT NULL,
+    q23 INT NOT NULL,
+    q24 INT NOT NULL,
+    q25 INT NOT NULL,
+    q26 INT NOT NULL,
+    q29 INT NOT NULL,
+    q30 INT NOT NULL,
+    q31 INT NOT NULL,
+    q32 INT NOT NULL,
+    recommendation TEXT NOT NULL,
+    user_id INT NOT NULL REFERENCES Users(id)
+);
+
 CREATE TABLE IF NOT EXISTS UserProfiles (
     id SERIAL PRIMARY KEY,
     firstName VARCHAR(255),
