@@ -367,6 +367,7 @@ body {
 
 /* Slider Container */
 /* Slider Container */
+/* Slider Container */
 .slider-container {
   display: flex;
   flex-direction: column;
@@ -376,69 +377,24 @@ body {
   margin: 0 auto;
   width: 100%; /* Volle Breite */
   height: auto; /* Automatische Höhe basierend auf Inhalt */
-  padding-bottom: 250px;
-  padding-top: 100px;
+  padding: 100px 20px;
 }
-
-/* Slick Dots (Navigationspunkte) */
-.slick-dots {
-  position: absolute; /* Fixiert die Punkte relativ zum Container */
-  bottom: -30px; /* Abstand unterhalb des Sliders */
-  left: 50%; /* Zentriert horizontal */
-  transform: translateX(-50%); /* Korrektur für zentrierte Position */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px; /* Abstand zwischen Punkten */
-  list-style: none; /* Entfernt Standard-Listenstil */
-  padding: 0;
-  margin: 0;
-}
-
-.slick-dots li button {
-  width: 12px; /* Punktgröße */
-  height: 12px;
-  border: none;
-  border-radius: 50%;
-  background-color: #ccc; /* Inaktive Punktfarbe */
-  cursor: pointer;
-}
-
-.slick-dots li.slick-active button {
-  background-color: #00a0e1; /* Aktive Punktfarbe */
-}
-
-/* Slider Items */
-.slider-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center; /* Zentriert Text und Bild */
-}
-
-.slider-image {
-  width: 100%;
-  max-width: 600px; /* Begrenzte Breite */
-  border-radius: 10px; /* Abgerundete Ecken */
-  margin-bottom: 15px; /* Abstand zum Text */
-}
-
-.slider-description {
-  font-size: 1.2rem; /* Angenehme Lesbarkeit */
-  color: #666; /* Dezente Schriftfarbe */
-  max-width: 600px; /* Begrenzte Breite für die Beschreibung */
-  margin-top: 10px;
-}
-
 
 /* Überschrift Stil */
+.slider-heading {
+  font-size: 2.5rem; /* Größerer Text */
+  font-weight: bold; /* Dickere Schrift */
+  font-family: 'Roboto', sans-serif; /* Schöne Schriftart */
+  text-align: center; /* Zentriert */
+  margin-bottom: 50px; /* Abstand zum Slider */
+  color: #333; /* Dezente dunkle Farbe */
+}
 
 /* Slider selbst */
 .slick-slider {
-  width: 90%;               /* Breite auf 90% des Containers */
-  max-width: 800px;         /* Maximale Breite für normale Ansicht */
-  height: 400px;            /* Höhe für normale Größe */
+  width: 100%;
+  max-width: 1000px; /* Größere Breite */
+  height: 500px; /* Höhere Slides */
   margin: 0 auto;
   position: relative;
 }
@@ -449,32 +405,68 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center; /* Zentriert Text und Bilder */
 }
 
-/* Stil für das Bild im Slider */
-.slick-slide img {
+/* Slider Images */
+.slider-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;        /* Bild proportional skalieren */
-  border-radius: 10px;      /* Optional: abgerundete Ecken für das Bild */
+  max-width: 800px; /* Einheitliche Breite */
+  height: 400px; /* Einheitliche Höhe */
+  object-fit: cover; /* Skaliert proportional */
+  border-radius: 10px; /* Abgerundete Ecken */
+  margin-bottom: 20px;
 }
 
-/* Paginierung (Pfeile) */
+/* Slider Beschreibung */
+.slider-description {
+  font-size: 1.3rem; /* Angenehme Lesbarkeit */
+  color: #555; /* Dezente Farbe */
+  max-width: 800px; /* Begrenzte Breite für die Beschreibung */
+  line-height: 1.6; /* Angenehmer Zeilenabstand */
+}
+
+/* Punktnavigation */
+.slick-dots {
+  position: absolute;
+  bottom: -50px; /* Abstand unterhalb des Sliders */
+  display: flex;
+  justify-content: center; /* Zentriert Punkte horizontal */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 10px; /* Abstand zwischen Punkten */
+}
+
+.slick-dots li button {
+  width: 15px; /* Größere Punkte */
+  height: 15px;
+  border: none;
+  border-radius: 50%;
+  background-color: #ccc; /* Inaktive Punktfarbe */
+  cursor: pointer;
+}
+
+.slick-dots li.slick-active button {
+  background-color: #00a0e1; /* Aktive Punktfarbe */
+}
+
+/* Navigationspfeile */
 .slick-prev, .slick-next {
   z-index: 1;
   color: white;
-  font-size: 5.8rem;        /* Kleinere Pfeile für normale Ansicht */
-  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 2rem;
+  background-color: rgba(0, 0, 0, 0.5); /* Halbtransparente Hintergrundfarbe */
   border-radius: 50%;
-  padding: 8px;
+  padding: 10px;
 }
 
 .slick-prev {
-  left: 10px;
+  left: -40px;
 }
 
 .slick-next {
-  right: 10px;
+  right: -40px;
 }
 
 /* Punktnavigation */

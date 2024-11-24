@@ -17,6 +17,10 @@ import book from '@/assets/pictures/book.png'
 import book2 from '@/assets/pictures/book2.jpg'
 import mood from '@/assets/pictures/mood.jpg'
 import meditation from '@/assets/pictures/meditation.jpg'
+import therapie from '@/assets/pictures/therapie.jpg'
+import appointment from '@/assets/pictures/appointment.jpg'
+import session from '@/assets/pictures/session.jpg'
+import security from '@/assets/pictures/security.jpg'
 
 
 const HomePage = () => {
@@ -208,7 +212,7 @@ const HomePage = () => {
                 <Slider {...settings}>
                     <div className="slider-item">
                         <img
-                            src={tool}
+                            src={therapie}
                             alt="Professional Support"
                             className="slider-image"
                         />
@@ -218,7 +222,7 @@ const HomePage = () => {
                     </div>
                     <div className="slider-item">
                         <img
-                            src={survey}
+                            src={appointment}
                             alt="Easily Book Appointment"
                             className="slider-image"
                         />
@@ -228,7 +232,7 @@ const HomePage = () => {
                     </div>
                     <div className="slider-item">
                         <img
-                            src={icon1}
+                            src={session}
                             alt="Flexible Online Sessions"
                             className="slider-image"
                         />
@@ -238,7 +242,7 @@ const HomePage = () => {
                     </div>
                     <div className="slider-item">
                         <img
-                            src={icon1}
+                            src={security}
                             alt="Confidential Conversations"
                             className="slider-image"
                         />
