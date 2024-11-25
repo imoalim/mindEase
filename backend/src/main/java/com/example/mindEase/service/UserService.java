@@ -51,7 +51,7 @@ public class UserService {
 
     }
 
-    public User findCurrentUser(String email)
+    public Optional<User> findCurrentUser(String email)
     {
         if(userRepository.existsByEmail(email))
         {

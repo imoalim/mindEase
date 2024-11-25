@@ -72,9 +72,9 @@ public class UserController {
     }
 
     @GetMapping("/currentUser")
-    public ResponseEntity<User> getCurrentUser(@RequestParam String email)
+    public ResponseEntity<Optional<User>> getCurrentUser(@RequestParam String email)
     {
-        User responseBody = userService.findCurrentUser(email);
+        Optional<User> responseBody = userService.findCurrentUser(email);
         return ResponseEntity.ok(responseBody);
     }
 }
