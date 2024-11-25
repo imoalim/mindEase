@@ -8,7 +8,7 @@ import java.util.Map;
 
 @RestController
 public class AuthenticationController {
-    @GetMapping("/user")
+    @GetMapping("/api/user")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
         return principal.getAttributes();
     }

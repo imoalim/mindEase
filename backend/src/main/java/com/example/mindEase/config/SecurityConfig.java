@@ -33,7 +33,7 @@ public class SecurityConfig {
 //                            response.sendRedirect("http://localhost:5173/");
 //                        })
 //                )
-                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:5173/profile", true))
+                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:5173/post-auth", true))
                 .logout(logout -> logout.logoutSuccessUrl("http://localhost:5173/").permitAll());
         return http.build();
     }
