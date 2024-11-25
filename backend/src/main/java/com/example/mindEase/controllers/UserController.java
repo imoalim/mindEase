@@ -62,23 +62,6 @@ public class UserController {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        try {
-            User registeredUser = userService.registerUser(user);
-
-            if (!registeredUser.isVerified()) {
-                return new ResponseEntity<>("User registered but requires verification.", HttpStatus.CREATED);
-            }
-
-            return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error during registration", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 
     @PostMapping("/questionnaire")
     public ResponseEntity<Long> saveQuestionnaire(@RequestBody UserQuestionnaire userQuestionnaire)

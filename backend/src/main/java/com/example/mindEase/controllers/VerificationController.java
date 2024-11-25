@@ -14,20 +14,20 @@ public class VerificationController {
     @Autowired
     private VerificationService verificationService;
 
-    @PostMapping("/{userId}/start")
-    public ResponseEntity<?> startVerification(
-            @PathVariable Long userId,
-            @RequestParam(required = false) String answers, // Für Studenten
-            @RequestParam(required = false) MultipartFile document // Für Therapeuten
-    ) {
-        try {
-            verificationService.startVerification(userId, answers, document);
-            return new ResponseEntity<>("Verification process started.", HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error starting verification.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("/{userId}/start")
+//    public ResponseEntity<?> startVerification(
+//            @PathVariable Long userId,
+//            @RequestParam(required = false) String answers, // Für Studenten
+//            @RequestParam(required = false) MultipartFile document // Für Therapeuten
+//    ) {
+//        try {
+//            verificationService.startVerification(userId, answers, document);
+//            return new ResponseEntity<>("Verification process started.", HttpStatus.OK);
+//        } catch (IllegalArgumentException e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("Error starting verification.", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }
 

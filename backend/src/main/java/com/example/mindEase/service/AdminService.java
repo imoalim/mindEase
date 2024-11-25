@@ -15,17 +15,17 @@ public class AdminService {
         this.userRepository = userRepository;
     }
 
-    public User verifyUser(Long userId, boolean isApproved) {
-        Optional<User> userOptional = userRepository.findById(userId);
-
-        if (userOptional.isEmpty()) {
-            throw new IllegalArgumentException("User not found.");
-        }
-
-        User user = userOptional.get();
-
-        user.setVerified(isApproved);
-
-        return userRepository.save(user);
-    }
+//    public User verifyUser(Long userId, boolean isApproved) {
+//        Optional<User> userOptional = userRepository.findById(userId);
+//
+//        if (userOptional.isEmpty()) {
+//            throw new IllegalArgumentException("User not found.");
+//        }
+//
+//        User user = userOptional.get();
+//
+//        user.setVerified(isApproved);
+//
+//        return userRepository.save(user);
+//    }
 }

@@ -4,21 +4,18 @@ import com.example.mindEase.user.User;
 import com.example.mindEase.user.UserQuestionnaire;
 import com.example.mindEase.user.UserQuestionnaireRepository;
 import com.example.mindEase.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final UserQuestionnaireRepository userQuestionnaireRepository;
-
-    public UserService(UserRepository userRepository, UserQuestionnaireRepository userQuestionnaireRepository) {
-        this.userRepository = userRepository;
-        this.userQuestionnaireRepository = userQuestionnaireRepository;
-    }
 
     public User saveUser(User user) {
         return userRepository.save(user);
@@ -38,45 +35,6 @@ public class UserService {
             return true;
         }
         return false;
-    }
-
-    public User registerUser(User user) {
-        // Basisprüfung: Ist die E-Mail bereits registriert?
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email is already registered.");
-        }
-
-        // Validierung und spezielle Anforderungen basierend auf der Rolle
-        switch (user.getUserRole()) {
-            case THERAPIST:
-                if (user.getDocumentPath() == null || user.getDocumentPath().isEmpty()) {
-                    throw new IllegalArgumentException("Therapists must upload qualification documents.");
-                }
-                user.setVerified(false); // Verifikation durch Admin erforderlich
-                break;
-
-            case PSYCHOLOGY_STUDENT:
-                if (user.getVerificationAnswers() == null || user.getVerificationAnswers().isEmpty()) {
-                    throw new IllegalArgumentException("Psychology Students must provide answers for verification.");
-                }
-                user.setVerified(false); // Verifikation durch Admin erforderlich
-                break;
-
-            default: // Normale Benutzer
-                user.setVerified(true); // Direkt aktiv
-                break;
-        }
-
-        // Passwort-Hashing (z.B. BCrypt)
-        user.setPassword(hashPassword(user.getPassword()));
-
-        // Benutzer speichern
-        return userRepository.save(user);
-    }
-
-    private String hashPassword(String password) {
-        // Verwende eine Sicherheitsbibliothek wie BCrypt zum Hashen
-        return password; // Placeholder für das Beispiel
     }
 
 

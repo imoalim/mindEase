@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -24,30 +27,31 @@ public class User {
     private String email;
 
     @NotNull
+    @Length(min = 2, max = 255)
+    @Column(name = "password")
     private String password;
 
-    @NotNull
-    private String firstName;
+//    @NotNull
+//    private String firstName;
+//
+//    @NotNull
+//    private String lastName;
+//
+//    @NotNull
+//    private String age;
+//
+//    @NotNull
+//    private String location;
 
-    @NotNull
-    private String lastName;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private Set<UserRoleEntity> userRoles;
 
-    @NotNull
-    private String age;
+//    private boolean verified;
+//
+//    @Lob
+//    private String verificationAnswers;
+//
+//    private String documentPath;
 
-    @NotNull
-    private String location;
-
-    @Enumerated(EnumType.STRING)
-    private Role userRole;
-
-    private boolean verified; // Ob der Benutzer verifiziert ist
-
-    @Lob
-    private String verificationAnswers; // Für Psychology Students: JSON oder Text
-
-    private String documentPath; // Für Therapists: Pfad zum hochgeladenen Dokument
-
-    public <A> User(A email) {
-    }
 }
