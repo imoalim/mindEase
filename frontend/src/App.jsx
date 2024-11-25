@@ -10,7 +10,7 @@ import PrivateRoutes from "./components/PrivateRoutes.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import ResourcesPage from './pages/Resources.jsx';
-// import NavBar from './components/NavBar.jsx'
+import RegistrationPage from "./pages/RegistrationPage.jsx";
 
 const App = () => {
   return (
@@ -27,6 +27,7 @@ const App = () => {
           <Route path="/appointment-page" element={<AppointmentPage />} />
           <Route path="/questionnaire" element={<Questionnaire />} />
           <Route path="/suggestions" element={<AIExplainer />} />
+          <Route path="/complete-profile" element={<RegistrationPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
         </Routes>
       </Router>

@@ -3,6 +3,7 @@ package com.example.mindEase.service;
 import com.example.mindEase.user.Role;
 import com.example.mindEase.user.User;
 import com.example.mindEase.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,13 +12,10 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class VerificationService {
 
     private final UserRepository userRepository;
-
-    public VerificationService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
 //    public void startVerification(Long userId, String answers, MultipartFile document) throws Exception {
 //        Optional<User> userOptional = userRepository.findById(userId);

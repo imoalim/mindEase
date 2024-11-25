@@ -35,7 +35,7 @@ const RegisterPage = () => {
 
             login(response.data.accessToken);
 
-            navigate("/");
+            navigate("/complete-profile");
         } catch (err) {
             console.error("Error registering or logging in:", err.response?.data || err.message)
             setError(err.response?.data?.message || "An error occurred during registration.")
