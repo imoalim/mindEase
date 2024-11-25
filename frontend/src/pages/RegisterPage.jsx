@@ -3,7 +3,7 @@ import { Button, Box, Typography, Paper, TextField } from "@mui/material"
 import NavBar from "../components/NavBar.jsx"
 import registerImage from "@/assets/pictures/login.svg";
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import {useAuth} from "../services/AuthProvider.jsx";
 
 const RegisterPage = () => {
@@ -13,7 +13,11 @@ const RegisterPage = () => {
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
     const navigate = useNavigate()
-    const {login} = useAuth()
+    const {login, isAuthenticated} = useAuth()
+
+    if(isAuthenticated) {
+        navigate('/')
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -26,17 +30,12 @@ const RegisterPage = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:8080/auth/register", { email, password });
-            console.log("Registration successful:", response.data)
+            const response = await axios.post("http://localhost:8080/auth/register", { email, password })
             setSuccess("Registration successful! Logging you in...")
 
-            const loginResponse = await axios.post("http://localhost:8080/auth/login", { email, password })
-            console.log("Login successful:", loginResponse.data)
-
-            login(loginResponse.data.acessToken);
+            login(response.data.accessToken);
 
             navigate("/");
-
         } catch (err) {
             console.error("Error registering or logging in:", err.response?.data || err.message)
             setError(err.response?.data?.message || "An error occurred during registration.")
@@ -134,6 +133,9 @@ const RegisterPage = () => {
                         >
                             Register
                         </Button>
+                        <Typography>
+                            Already registered? <Link to="/login">Login here</Link>
+                        </Typography>
                     </Box>
                 </Paper>
             </Box>
