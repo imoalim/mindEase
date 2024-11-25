@@ -1,11 +1,16 @@
 package com.example.mindEase.controllers;
 
+import com.example.mindEase.config.security.token.AccessToken;
 import com.example.mindEase.service.UserService;
 import com.example.mindEase.user.User;
 import com.example.mindEase.user.UserQuestionnaire;
+import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +24,23 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    @GetMapping("/me")
+    public ResponseEntity<Optional<User>> getMe() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AccessToken accessToken = (AccessToken) authentication.getDetails();
+
+        Optional<User> user = userService.findUserById(accessToken.getUserId());
+        if (user.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
     // GET endpoint to get all users
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.findAllUsers();
         if (users.isEmpty()) {
@@ -31,6 +51,7 @@ public class UserController {
 
     // GET endpoint to get a user by ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> user = userService.findUserById(id);
         return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
