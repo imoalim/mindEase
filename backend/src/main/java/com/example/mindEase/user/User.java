@@ -47,7 +47,8 @@ public class User {
     @JoinColumn(name = "user_id")
     private Set<UserRoleEntity> userRoles;
 
-//    private boolean verified;
+    @NotNull
+    private Boolean verified;
 //
 //    @Lob
 //    private String verificationAnswers;
