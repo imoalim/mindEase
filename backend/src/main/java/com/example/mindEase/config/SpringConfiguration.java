@@ -14,11 +14,8 @@ public class SpringConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedMethods("*")
-                        .allowedOrigins(allowedOrigins)
-                        .allowedHeaders("*")
-                        .allowedHeaders("Access-Control-Allow-Origin: *")
-                        .allowCredentials(true);
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOrigins(allowedOrigins);
             }
         };
     }

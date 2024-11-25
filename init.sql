@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS Users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
-    userRole VARCHAR(50) NOT NULL
+    password varchar(255) NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS UserQuestionnaire (
@@ -62,7 +62,13 @@ CREATE TABLE IF NOT EXISTS Feedbacks (
     appointmentId INT REFERENCES Appointments(id)
 );
 
+CREATE TABLE IF NOT EXISTS `user_roles` (
+    id       SERIAL PRIMARY KEY,
+    user_id   INT REFERENCES Users(id),
+    role_name varchar(50) NOT NULL UNIQUE
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
 -- optional example data
-INSERT INTO Users (username, email, userRole) VALUES ('johndoe', 'john@example.com', 'USER');
-INSERT INTO UserProfiles (firstName, lastName, age, gender, mentalHealthIssues, userId) VALUES ('John', 'Doe', 30, 'Male', 'Anxiety', 1);
-INSERT INTO TherapistProfiles (licenseNumber, specialties, experienceYears, userId) VALUES ('T12345', 'Cognitive Behavioral Therapy', 10, 1);
+-- INSERT INTO Users (username, email, userRole) VALUES ('johndoe', 'john@example.com', 'USER');
+-- INSERT INTO UserProfiles (firstName, lastName, age, gender, mentalHealthIssues, userId) VALUES ('John', 'Doe', 30, 'Male', 'Anxiety', 1);
+-- INSERT INTO TherapistProfiles (licenseNumber, specialties, experienceYears, userId) VALUES ('T12345', 'Cognitive Behavioral Therapy', 10, 1);
