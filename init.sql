@@ -68,6 +68,16 @@ CREATE TABLE IF NOT EXISTS `user_roles` (
     role_name varchar(50) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
+CREATE TABLE IF NOT EXISTS  `exercises` (
+    id       SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    duration VARCHAR(50),
+    description TEXT,
+    benefits TEXT,
+    type VARCHAR(255),
+    image VARCHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
 -- optional example data
 -- INSERT INTO Users (username, email, userRole) VALUES ('johndoe', 'john@example.com', 'USER');
 -- INSERT INTO UserProfiles (firstName, lastName, age, gender, mentalHealthIssues, userId) VALUES ('John', 'Doe', 30, 'Male', 'Anxiety', 1);
