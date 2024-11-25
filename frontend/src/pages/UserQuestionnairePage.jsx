@@ -28,7 +28,7 @@ const questions = [
     { id: 26, text: "Easily startled" }
 ];
 
-const Questionnaire = () => {
+const QuestionnairePage = () => {
     const [responses, setResponses] = useState({});
     const [error, setError] = useState(false);
     const navigate = useNavigate();
@@ -103,4 +103,4 @@ const Questionnaire = () => {
     );
 };
 
-export default Questionnaire;
+export default QuestionnairePage;

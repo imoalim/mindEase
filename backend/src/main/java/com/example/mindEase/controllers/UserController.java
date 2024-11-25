@@ -1,6 +1,7 @@
 package com.example.mindEase.controllers;
 
 import com.example.mindEase.config.security.token.AccessToken;
+import com.example.mindEase.dto.UserQuestionnaireRequest;
 import com.example.mindEase.service.UserService;
 import com.example.mindEase.user.User;
 import com.example.mindEase.user.UserQuestionnaire;
@@ -36,6 +37,19 @@ public class UserController {
         }
 
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/meId")
+    public ResponseEntity<Long> getMeId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AccessToken accessToken = (AccessToken) authentication.getDetails();
+
+        Long userId = accessToken.getUserId();
+        if (userId == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(userId, HttpStatus.OK);
     }
 
     // GET endpoint to get all users
@@ -86,16 +100,10 @@ public class UserController {
 
 
     @PostMapping("/questionnaire")
-    public ResponseEntity<Long> saveQuestionnaire(@RequestBody UserQuestionnaire userQuestionnaire)
+    public ResponseEntity<Long> saveQuestionnaire(@RequestBody UserQuestionnaireRequest request)
     {
-        Long response = userService.saveUserEmotionalStateQuestionnaire(userQuestionnaire);
+        Long response = userService.saveUserEmotionalStateQuestionnaire(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/currentUser")
-    public ResponseEntity<Optional<User>> getCurrentUser(@RequestParam String email)
-    {
-        Optional<User> responseBody = userService.findCurrentUser(email);
-        return ResponseEntity.ok(responseBody);
-    }
 }
