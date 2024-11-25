@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS Feedbacks (
 CREATE TABLE IF NOT EXISTS `user_roles` (
     id       SERIAL PRIMARY KEY,
     user_id   INT REFERENCES Users(id),
-    role_name varchar(50) NOT NULL UNIQUE,
+    role_name varchar(50) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 -- optional example data
