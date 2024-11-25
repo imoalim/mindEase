@@ -35,7 +35,7 @@ const RegisterPage = () => {
             const loginResponse = await axios.post("http://localhost:8080/auth/login", { email, password })
             console.log("Login successful:", loginResponse.data)
 
-            login(loginResponse.data.token);
+            login(loginResponse.data.acessToken);
 
             navigate("/dashboard");
 

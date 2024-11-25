@@ -37,7 +37,7 @@ public class AuthenticationService extends DefaultOAuth2UserService {
 
         public LoginResponse login(LoginRequest loginRequest) {
             Optional<User> user = userRepository.findByEmail(loginRequest.getEmail());
-            if (user == null) {
+            if (user.isEmpty()) {
                 throw new InvalidCredentialsException();
             }
 

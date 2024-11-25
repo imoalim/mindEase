@@ -1,13 +1,17 @@
-import { useState } from "react";
-import { Button, Box, Typography, Paper, TextField } from "@mui/material";
-import NavBar from "../components/NavBar.jsx";
-import login from "@/assets/pictures/login.svg";
-import axios from "axios";
+import { useState } from "react"
+import { Button, Box, Typography, Paper, TextField } from "@mui/material"
+import NavBar from "../components/NavBar.jsx"
+import loginImage from "@/assets/pictures/login.svg"
+import axios from "axios"
+import {useAuth} from "../services/AuthProvider.jsx"
+import {useNavigate} from "react-router-dom"
 
 const LoginPage = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState(null);
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [error, setError] = useState(null)
+    const {login} = useAuth()
+    const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -19,11 +23,11 @@ const LoginPage = () => {
                     "Content-Type": "application/json",
                 }}
             );
-            console.log("Login successful:", response.data);
+            login(response.data.accessToken);
+            navigate('/')
             // Redirect or show success message
         } catch (err) {
-            console.error("Error registering:", err.response?.data || err.message);
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response.data.errors[0].error  === "INVALID_CREDENTIALS" ? "Invalid credentials" : "An error occurred");
         }
     };
 
@@ -52,7 +56,7 @@ const LoginPage = () => {
                     }}
                 >
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <img src={login} alt="Authenticate" style={{ width: "200px" }} />
+                        <img src={loginImage} alt="Authenticate" style={{ width: "200px" }} />
                     </div>
                     <Typography variant="h4" align="center" gutterBottom>
                         Login to MindEase
@@ -98,7 +102,7 @@ const LoginPage = () => {
                             color="primary"
                             fullWidth
                         >
-                            Register
+                            Login
                         </Button>
                     </Box>
                 </Paper>
