@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -67,5 +68,12 @@ public class UserController {
     {
         Long response = userService.saveUserEmotionalStateQuestionnaire(userQuestionnaire);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/currentUser")
+    public ResponseEntity<User> getCurrentUser(@RequestParam String email)
+    {
+        User responseBody = userService.findCurrentUser(email);
+        return ResponseEntity.ok(responseBody);
     }
 }

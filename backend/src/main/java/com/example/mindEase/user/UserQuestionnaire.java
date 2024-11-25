@@ -42,6 +42,7 @@ public class UserQuestionnaire {
     private int q32;
 
     @NotNull
+    @Lob
     private String recommendation;
 
     @OneToOne

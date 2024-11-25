@@ -52,4 +52,14 @@ public class UserService {
 //        }
 
     }
+
+    public User findCurrentUser(String email)
+    {
+        if(userRepository.existsByEmail(email))
+        {
+            return userRepository.findByEmail(email);
+        } else {
+            throw new RuntimeException("user doesnt exist");
+        }
+    }
 }

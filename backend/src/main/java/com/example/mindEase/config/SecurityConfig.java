@@ -9,6 +9,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -38,3 +43,15 @@ public class SecurityConfig {
         return http.build();
     }
 }
+//
+//@Bean
+//CorsConfigurationSource corsConfigurationSource() {
+//    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//    CorsConfiguration configuration = new CorsConfiguration();
+//    configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Add allowed origins
+//    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE")); // HTTP methods
+//    configuration.setAllowedHeaders(List.of("*")); // Allow all headers
+//    configuration.setAllowCredentials(true); // Allow credentials (cookies, headers)
+//    source.registerCorsConfiguration("/**", configuration); // Apply to all endpoints
+//    return source;
+//}
