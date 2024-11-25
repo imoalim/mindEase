@@ -26,18 +26,16 @@ const RegisterPage = () => {
         }
 
         try {
-            // Register the user
             const response = await axios.post("http://localhost:8080/auth/register", { email, password });
             console.log("Registration successful:", response.data)
             setSuccess("Registration successful! Logging you in...")
 
-            // Automatically login after registration
             const loginResponse = await axios.post("http://localhost:8080/auth/login", { email, password })
             console.log("Login successful:", loginResponse.data)
 
             login(loginResponse.data.acessToken);
 
-            navigate("/dashboard");
+            navigate("/");
 
         } catch (err) {
             console.error("Error registering or logging in:", err.response?.data || err.message)
