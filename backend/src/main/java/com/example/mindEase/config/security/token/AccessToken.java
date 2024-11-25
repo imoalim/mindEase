@@ -9,5 +9,7 @@ public interface AccessToken {
 
     Set<String> getRoles();
 
-    boolean hasRole(String roleName);
+    Boolean getVerified();
+
+    Boolean hasRole(String roleName);
 }

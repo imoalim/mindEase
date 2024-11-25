@@ -14,15 +14,17 @@ public class AccessTokenImpl implements AccessToken {
     private final String email;
     private final Long userId;
     private final Set<String> roles;
+    private final Boolean verified;
 
-    public AccessTokenImpl(String email, Long userId, Collection<String> roles) {
+    public AccessTokenImpl(String email, Long userId, Collection<String> roles, boolean verified) {
         this.email = email;
         this.userId = userId;
         this.roles = roles != null ? Set.copyOf(roles) : Collections.emptySet();
+        this.verified = verified;
     }
 
     @Override
-    public boolean hasRole(String roleName) {
+    public Boolean hasRole(String roleName) {
         return this.roles.contains(roleName);
     }
 }

@@ -4,8 +4,9 @@ const client = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
         "Content-Type": "application/json",
-        "Authentication": `Bearer ${localStorage.getItem("token")}`,
-    }
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+    },
+    withCredentials: false
 });
 
 export default client;

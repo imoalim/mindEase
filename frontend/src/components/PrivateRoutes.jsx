@@ -3,6 +3,6 @@ import { useAuth } from "@/services/AuthProvider";
 
 const PrivateRoutes = () => {
     const { isAuthenticated } = useAuth();
-    return isAuthenticated ? <Outlet /> : <Navigate to="/authenticate" />;
+    return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
 export default PrivateRoutes;

@@ -54,7 +54,7 @@ public class AuthenticationService extends DefaultOAuth2UserService {
                 throw new UserAlreadyExistsException();
             }
 
-            User tempUser = User.builder().email(request.getEmail()).password(request.getPassword()).build();
+            User tempUser = User.builder().email(request.getEmail()).password(request.getPassword()).verified(false).build();
 
             User savedUser = saveNewUser(tempUser);
 
@@ -67,6 +67,7 @@ public class AuthenticationService extends DefaultOAuth2UserService {
             User newUser = User.builder()
                     .email(request.getEmail())
                     .password(encodedPassword)
+                    .verified(false)
                     .build();
 
             newUser.setUserRoles(Set.of(
@@ -89,6 +90,6 @@ public class AuthenticationService extends DefaultOAuth2UserService {
                     .toList();
 
             return accessTokenEncoder.encode(
-                    (AccessToken) new AccessTokenImpl(user.get().getEmail(), userId, roles));
+                    new AccessTokenImpl(user.get().getEmail(), userId, roles, user.get().getVerified()));
         }
 }

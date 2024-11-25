@@ -39,7 +39,9 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
         }
         if (accessToken.getEmail() != null) {
             claimsMap.put("userId", accessToken.getUserId());
+            claimsMap.put("verified", accessToken.getVerified());
         }
+
 
         Instant now = Instant.now();
         return Jwts.builder()
@@ -60,8 +62,9 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
 
             List<String> roles = claims.get("roles", List.class);
             Long userId = claims.get("userId", Long.class);
+            Boolean verified = claims.get("verified", Boolean.class);
 
-            return (AccessToken) new AccessTokenImpl(claims.getSubject(), userId, roles);
+            return new AccessTokenImpl(claims.getSubject(), userId, roles, verified);
         } catch (JwtException e) {
             throw new InvalidAccessTokenException(e.getMessage());
         }
