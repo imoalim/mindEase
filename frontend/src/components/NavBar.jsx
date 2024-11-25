@@ -1,8 +1,10 @@
 import { AppBar, Toolbar, Typography, Button } from '@mui/material'
 import { Link } from 'react-router-dom'
 import logo from '@/assets/pictures/logo.png'
+import {useAuth} from "../services/AuthProvider.jsx";
 
 const NavBar = () => {
+    const {isAuthenticated, logout} = useAuth();
     return (
         <AppBar position="static" style={{ backgroundColor: '#87CEEB' }}>
             <Toolbar>
@@ -15,7 +17,11 @@ const NavBar = () => {
                 <Button color="inherit" component={Link} to="/therapy-services">Therapy Services</Button>
                 <Button color="inherit" component={Link} to="/self-assessment">Self-Assessment</Button>
                 <Button color="inherit" component={Link} to="/resources">Resources</Button>
-                <Button color="inherit" component={Link} to="/authenticate">Authenticate</Button>
+                {!isAuthenticated ?
+                    <Button color="inherit" component={Link} to="/authenticate">Authenticate</Button>
+                    :
+                    <Button color="inherit" onClick={logout}>Logout</Button>
+                }
             </Toolbar>
         </AppBar>
     )
