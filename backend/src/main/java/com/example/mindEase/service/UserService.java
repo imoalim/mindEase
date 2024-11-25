@@ -4,21 +4,18 @@ import com.example.mindEase.user.User;
 import com.example.mindEase.user.UserQuestionnaire;
 import com.example.mindEase.user.UserQuestionnaireRepository;
 import com.example.mindEase.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final UserQuestionnaireRepository userQuestionnaireRepository;
-
-    public UserService(UserRepository userRepository, UserQuestionnaireRepository userQuestionnaireRepository) {
-        this.userRepository = userRepository;
-        this.userQuestionnaireRepository = userQuestionnaireRepository;
-    }
 
     public User saveUser(User user) {
         return userRepository.save(user);
@@ -39,6 +36,7 @@ public class UserService {
         }
         return false;
     }
+
 
     public Long saveUserEmotionalStateQuestionnaire(UserQuestionnaire userQuestionnaire){
         //exception handling  if the user doesnt exist

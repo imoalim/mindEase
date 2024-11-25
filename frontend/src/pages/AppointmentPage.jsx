@@ -13,6 +13,7 @@ const AppointmentPage = () => {
                 setAppointments(response.data);
             })
             .catch(error => {
+                console.log('d')
                 console.error("There was an error fetching the appointments!", error);
             });
     }, []);
@@ -34,7 +35,7 @@ const AppointmentPage = () => {
 
             {/* Displaying the list of appointments */}
             <Grid container spacing={3} justifyContent="center">
-                {appointments.length > 0 ? (
+                {appointments.length && appointments.length > 0 ? (
                     appointments.map((appointment) => (
                         <Grid item xs={12} sm={6} md={4} key={appointment.id}>
                             <Card variant="outlined" style={{ minHeight: '200px', display: 'flex', flexDirection: 'column' }}>
