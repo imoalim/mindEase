@@ -4,20 +4,22 @@ import { Container, Typography, Button, Grid2 } from "@mui/material";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import NavBar from './NavBar.jsx';
 import '../css/Questionnaire.css';
-import { ChevronRight, ChevronLeft } from '@mui/icons-material';
+import { ChevronRight, ChevronLeft, Verified } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import UserDetailsAPI from "../axios/UserDetailsAPI.jsx";
+import client from "../axios/APIinitializer.jsx";
 
 
 
-function AIExplainer() {
+function RecommendationsPage() {
     const [AIresponse, setAIResponse] = useState("");
     const [loading, setLoading] = useState(false);
     const location = useLocation();
     const responses = location.state?.responses || {};
     const navigate = useNavigate();
+    const [currentUserId, setCurrentUserId] = useState(null)
 
-    const createUserQuestionnairePayload = (responses, recommendation = "") => {
+    const createUserQuestionnairePayload = (responses) => {
         return {
             q2: responses["2"] || null,
             q20: responses["20"] || null,
@@ -30,8 +32,7 @@ function AIExplainer() {
             q30: responses["30"] || null,
             q31: responses["31"] || null,
             q32: responses["32"] || null,
-            recommendation: recommendation, // Set recommendation when available
-            user: null // implementation for now
+            userId: currentUserId 
         };
     };
 
@@ -59,25 +60,44 @@ function AIExplainer() {
         }
     };
 
-    const submitAnswers = async (recommendation) => {
-        const payload = createUserQuestionnairePayload(responses, recommendation);
+    const getCurrentUser = async () =>{
+        try{
+            const response = await client.get("/api/users/meId")
+            setCurrentUserId(response.data);
+        } catch(error){
+            console.error('Error retrieving current user');
+        }
+
+    }
+
+    const submitAnswers = async () => {
+        const payload = createUserQuestionnairePayload(responses);
+    
         try {
             const response = await UserDetailsAPI.createUserQuestionnaire(payload);
     
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Submission successful:', data);
+            
+            if (response.status === 201) {
+                console.log('Submission successful:'); 
             } else {
-                console.error('Submission failed:', response.statusText);
+                console.error('Unexpected response status:', response.status);
             }
         } catch (error) {
             console.error('Error submitting questionnaire:', error);
         }
     };
+    
 
     useEffect(() => {
-        fetchResponse();
-    }, []);
+        getCurrentUser();
+    })
+
+    useEffect(() => {
+        if(currentUserId)
+        {
+            fetchResponse();
+        } 
+    }, [currentUserId]);
 
     return (
         <>
@@ -122,4 +142,4 @@ function AIExplainer() {
     );
 }
 
-export default AIExplainer;
+export default RecommendationsPage;

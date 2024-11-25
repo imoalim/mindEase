@@ -41,11 +41,8 @@ public class UserQuestionnaire {
     @NotNull
     private int q32;
 
-    @NotNull
-    private String recommendation;
-
     @OneToOne
-    //@NotNull
+    @NotNull
     @JoinColumn(name = "user_id")
     private User user;
 }
