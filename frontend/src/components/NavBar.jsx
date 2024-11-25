@@ -18,7 +18,7 @@ const NavBar = () => {
                 <Button color="inherit" component={Link} to="/self-assessment">Self-Assessment</Button>
                 <Button color="inherit" component={Link} to="/resources">Resources</Button>
                 {!isAuthenticated ?
-                    <Button color="inherit" component={Link} to="/authenticate">Authenticate</Button>
+                    <Button color="inherit" component={Link} to="/Login">Authenticate</Button>
                     :
                     <Button color="inherit" onClick={logout}>Logout</Button>
                 }

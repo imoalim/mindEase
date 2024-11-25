@@ -13,24 +13,22 @@ import LoginPage from "./pages/LoginPage.jsx";
 
 const App = () => {
   return (
-    <>
-      <AuthProvider>
-        <Router>
-          <Routes>
-            <Route element={<PrivateRoutes />} >
-                <Route path="/profile" element={<ProfilePage />} />
-            </Route>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/therapy-services" element={<TherapyServices />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/appointment-page" element={<AppointmentPage />} />
-            <Route path="/questionnaire" element={<Questionnaire />} />
-            <Route path="/suggestions" element={<AIExplainer />} />
-          </Routes>
-        </Router>
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route element={<PrivateRoutes />} >
+              <Route path="/profile" element={<ProfilePage />} />
+          </Route>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/therapy-services" element={<TherapyServices />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/appointment-page" element={<AppointmentPage />} />
+          <Route path="/questionnaire" element={<Questionnaire />} />
+          <Route path="/suggestions" element={<AIExplainer />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   )
 }
 
