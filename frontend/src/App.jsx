@@ -5,25 +5,25 @@ import AuthenticatePage from '@/pages/AuthenticatePage'
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Questionnaire from "@/pages/UserQuestionnaire.jsx";
 import AIExplainer from './components/GoogleAI.jsx';
-import Resources from "./pages/Resources.jsx";
 // import NavBar from './components/NavBar.jsx'
 
 const App = () => {
-    return (
-        <>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/therapy-services" element={<TherapyServices />} />
-                    <Route path="/authenticate" element={<AuthenticatePage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/register" element={<Questionnaire />} />
-                    <Route path="/suggestions" element={<AIExplainer />} />
-                    <Route path="/resources" element={<Resources />} />
-                </Routes>
-            </Router>
-        </>
-    )
+  return (
+    <>
+    <Router>
+      <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/therapy-services" element={<TherapyServices />} />
+          <Route path="/authenticate" element={<AuthenticatePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/appointment-page" element={<AppointmentPage />} />
+          <Route path="/register" element={<Questionnaire />} />
+          <Route path="/suggestions" element={<AIExplainer />} />
+        <Route path="/resources" element={<Resources />} />
+      </Routes>
+    </Router>
+    </>
+  )
 }
 
 export default App
