@@ -1,54 +1,550 @@
+/* Allgemeine Stile */
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #f0f7ff;
   margin: 0;
   padding: 0;
+
 }
 
+/* Animation für die Schwebenden Punkte */
+@keyframes float {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translateX(100px); /* Bewegung nach rechts */
+  }
+  50% {
+    transform: translateX(100px) translateY(100px); /* Bewegung nach unten rechts */
+  }
+  75% {
+    transform: translateX(0) translateY(100px); /* Bewegung nach unten links */
+  }
+  100% {
+    transform: translate(0, 0); /* Zurück zur Startposition */
+  }
+}
+
+.floating-dot {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  opacity: 0.6;
+  pointer-events: none;
+  animation: float 12s infinite linear;
+  z-index: 1; /* Damit die Punkte immer über anderen Inhalten bleiben */
+}
+
+/* Hellblauer Punkt */
+.dot {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #00bcd4; /* Hellblau */
+}
+
+/* Hellblaues Kreuz */
+.cross {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.cross::before,
+.cross::after {
+  content: '';
+  position: absolute;
+  background-color: #00bcd4; /* Hellblau */
+  width: 5px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cross::after {
+  height: 5px;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Hellblaues Dreieck */
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 30px solid #00bcd4; /* Hellblau */
+}
+
+
+
+/* Hero Section */
+/* Hero Section */
 .hero-section {
-  background-color: #e6f3ff;
+  background-image: url('/src/assets/pictures/background.jpg'); /* Hintergrundbild */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Parallax-Effekt aktivieren */
+  background-repeat: no-repeat;
   padding: 50px 0;
+  position: relative;
+  color: #ffffff;
+}
+.hero-section .hero-image {
+  margin-top: 10px; /* Verschiebt das Hero-Bild nach unten */
+}
+/* Helleres Overlay für den Hero-Bereich */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Subtile Dunkelung */
+  z-index: 1;
 }
 
+.hero-section * {
+  position: relative;
+  z-index: 2;
+}
+/* Überschrift und Schriftart */
 .hero-title {
+  font-family: 'Poppins', sans-serif; /* Schriftart ändern */
+  font-size: 3rem; /* Etwas größere Schrift */
+  font-weight: 600; /* Etwas stärkerer Text */
+  color: #ffffff;
+  text-align: center;
+  margin-top: 70px; /* Überschrift etwas höher verschieben */
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7); /* Verbesserung der Lesbarkeit */
+}
+
+
+/* Psychologist Image */
+.psychologistImage {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  top: 73px; /* Verschiebt das Bild nach unten */
+}
+/* Stats Section */
+.stats-section {
+  display: flex; /* Stellt sicher, dass Stats in einer Zeile angezeigt werden */
+  justify-content: space-around; /* Verteilte Platzierung */
+  align-items: center; /* Zentriert Inhalte vertikal */
+  background-color: #f5f5f5; /* Optional: Heller Hintergrund für die Stats */
+  padding: 20px; /* Abstände innen */
+  border-radius: 8px; /* Optional: Abgerundete Ecken */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Leichter Schatten */
+}
+
+.stats-section h4 {
+  font-size: 2.5rem;
+  color: #00a0e1; /* Dynamische Farbe für Zahlen */
+  font-weight: bold;
+}
+
+.stats-section p {
+  font-size: 1.2rem;
+  color: #555555;
+}
+
+.stat-card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 10px;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stat-number {
+  font-size: 3rem;
   font-weight: bold;
   color: #00a0e1;
 }
 
-.hero-image {
-  width: 100%;
-  height: auto;
+.stat-description {
+  font-size: 1.2rem;
+  color: #777;
+  margin-top: 10px;
 }
 
+
+
+
+/* Activities Section */
+.activities-section {
+  background-color: #ffffff; /* Weißer Hintergrund */
+  padding: 100px 20px; /* Innenabstände für den Bereich */
+  text-align: center; /* Zentrierte Inhalte */
+}
+
+.activities-title {
+  font-size: 2.5rem; /* Größere Überschrift */
+  font-weight: 900; /* Dickere Schrift */
+  color: #00a0e1; /* Blau passend zur Farbpalette */
+  margin-bottom: 20px; /* Weniger Abstand zur Unterüberschrift */
+  margin-top: 200px; /* Mehr Platz nach oben */
+
+}
+
+.activities-subtitle {
+  margin-top: 500px; /* Mehr Platz nach oben */
+
+  font-size: 1.3rem; /* Etwas größere Schrift */
+  color: #555555; /* Dezente graue Farbe */
+  margin-bottom: 50px; /* Weniger Platz nach unten */
+}
+
+
+
+/* Styling für die Activity Cards */
+.activity-card {
+  width: 300px; /* Einheitliche Breite */
+  padding: 30px; /* Innenabstand */
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin-top: 80px; /* Mehr Platz nach oben */
+
+}
+
+.activity-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.activity-icon {
+  width: 300px; /* Größere Icons */
+  height: 200px;
+  margin-bottom: 15px;
+}
+
+.activity-title {
+  font-size: 1.5rem; /* Größerer Titel für die Cards */
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 70px;
+  margin-top: 50px; /* Mehr Platz nach oben */
+
+}
+
+.activity-description {
+  font-size: 1.1rem; /* Verbesserte Lesbarkeit */
+  color: #666666; /* Dezente graue Farbe */
+}
+
+/* Responsivität für kleine Bildschirme */
+@media (max-width: 768px) {
+  .activities-grid {
+    flex-direction: column; /* Cards untereinander auf kleinen Bildschirmen */
+    gap: 10px; /* Weniger Abstand zwischen Cards */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* Größere Schriftgrößen für Typography */
+.activity-card .MuiTypography-body2 {
+  font-size: 1.2rem;
+  color: #666666;
+  line-height: 1.6; /* Bessere Lesbarkeit durch mehr Zeilenhöhe */
+}
+
+.activity-card .MuiTypography-h6 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10px; /* Abstand nach unten für bessere Struktur */
+}
+
+
+
+@media (max-width: 768px) {
+  .stat-card {
+    padding: 20px;
+  }
+  .stat-number {
+    font-size: 2rem;
+  }
+  .stat-description {
+    font-size: 1rem;
+  }
+}
+
+/* Feature Cards */
 .features {
-  margin-top: 30px;
+  margin-top: 40px; /* Mehr Abstand nach oben */
 }
 
 .feature-card {
   text-align: center;
-  padding: 20px;
-  box-shadow: none;
-  border: none;
+  padding: 25px; /* Etwas mehr Innenabstand */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px; /* Etwas Abstand nach oben für jedes einzelne Kärtchen */
+
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
 .feature-icon {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
+  width: 60px; /* Alle Bilder auf 60px setzen */
+  height: 60px; /* Gleiche Höhe */
+  margin-bottom: 20px; /* Mehr Abstand zum Text */
 }
 
-.stats-section {
-  background-color: #ffffff;
+.feature-card h6 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase; /* Für ein gleichmäßigeres Design */
+  letter-spacing: 1px;
+  margin-top: 15px; /* Mehr Abstand zum Bild */
+
+}
+
+/* Responsivität für kleinere Bildschirmgrößen */
+@media (max-width: 780px) {
+  .feature-card {
+    padding: 20px; /* Weniger Abstand auf mobilen Geräten */
+  }
+  .feature-icon {
+    width: 50px; /* Kleinere Icons auf mobilen Geräten */
+    height: 50px;
+  }
+}
+/* Appointment Section */
+/* Slider Container */
+/* Container für den Slider, um ihn in der Mitte zu platzieren */
+
+
+/* Slider Container */
+/* Slider Container */
+/* Container für den gesamten Slider-Bereich */
+.slider-section {
   text-align: center;
-  margin-top: -70px;
-  padding: 20px 0;
+  margin: 50px auto; /* Abstand nach oben und unten */
+  max-width: 1200px; /* Begrenzung der Breite */
+}
+/* Überschrift Stil */
+.slider-heading {
+  font-size: 2.5rem; /* Schriftgröße der Überschrift */
+  font-weight: bold;
+  color: #333; /* Dezente Farbe */
+  margin-bottom: 20px; /* Abstand zum Slider */
+  text-transform: uppercase; /* Optional: Text in Großbuchstaben */
 }
 
-.appointment-section {
-  background-color: #f0f7ff;
-  padding: 50px 0;
+/* Slider Container */
+/* Slider Container */
+/* Slider Container */
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Zentriert horizontal */
+  justify-content: center; /* Zentriert vertikal */
+  position: relative;
+  width: 100%;
+  max-width: 1000px; /* Maximalbreite */
+  margin: 0 auto;
+  padding: 50px 20px;
+  box-sizing: border-box;
+  overflow: hidden; /* Kein Scrollen */
 }
 
+/* Überschrift */
+.slider-heading {
+  font-size: 2.5rem; /* Größere Überschrift */
+  font-weight: 900; /* Dickere Schrift */
+  color: #00a0e1; /* Blau passend zur Farbpalette */
+  margin-bottom: 20px; /* Weniger Abstand zur Unterüberschrift */
+  margin-top: 250px;
+}
+/* Slider */
+.slick-slider {
+  width: 100%;
+  max-width: 800px; /* Breite des Sliders */
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Einzelne Slides */
+.slick-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Bild und Text untereinander */
+  text-align: center;
+}
+
+/* Slider-Bilder */
+.slider-image {
+  width: 100%;
+  max-width: 7000px;
+  height: 400px; /* Höhe */
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  margin-top: 40px;}
+
+/* Beschreibung */
+.slider-description {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 700px;
+  line-height: 1.5;
+}
+
+/* Punktnavigation */
+.slick-dots {
+  position: absolute;
+  bottom: -40px; /* Position unterhalb des Sliders */
+  display: flex;
+  justify-content: center; /* Punkte zentrieren */
+  gap: 10px; /* Abstand zwischen Punkten */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.slick-dots li button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ccc; /* Standardfarbe */
+  border: none;
+  cursor: pointer;
+}
+
+.slick-dots li.slick-active button {
+  background-color: #00a0e1; /* Farbe für aktiven Punkt */
+}
+
+/* Navigationspfeile */
+.slick-prev, .slick-next {
+  font-size: 2rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 50%;
+  z-index: 1;
+  padding: 5px;
+}
+
+.slick-prev {
+  left: -50px; /* Abstand links */
+}
+
+.slick-next {
+  right: -50px; /* Abstand rechts */
+}
+
+
+/* Punktnavigation */
+.slick-dots {
+  position: absolute; /* Fixiert die Punkte relativ zum Slider */
+  bottom: -500px;    /* Punkte direkt unter das Bild */
+  display: flex;
+  justify-content: center; /* Zentriert die Punkte horizontal */
+  list-style: none;        /* Entfernt Standard-Listenstil */
+  padding: 0;
+  margin: 0;
+}
+.slider-container .slick-dots {
+  position: absolute !important;
+  bottom: -30px !important;
+}
+
+.slick-dots li button {
+  background-color: white;
+  bottom: -210px;
+
+}
+
+.slick-dots li.slick-active button {
+  background-color: #00a0e1; /* Farbe für aktive Punkte */
+  bottom: -201px;
+
+}
+
+
+
+
+
+/* Appointment Section */
+.appointment-booking-section {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f0f8ff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-info {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.appointment-button {
+  display: inline-block;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #00a0e1;
+  color: white;
+  border-radius: 30px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.appointment-button:hover {
+  background-color: #008ec1;
+  transform: translateY(-3px);
+}
+
+.appointment-button:active {
+  transform: translateY(0);
+}
+
+
+
+
+
+
+
+/* Footer */
 .footer {
   background-color: #00a0e1;
   color: #ffffff;
@@ -56,9 +552,8 @@ body {
   text-align: center;
   margin-top: 50px;
 }
-.psychologistImage {
-  max-width: 100%;
-  height: auto;
-  display: block;
 
+.footer p {
+  margin: 0;
+  font-size: 0.9rem;
 }
