@@ -5,6 +5,7 @@ import AuthenticatePage from '@/pages/AuthenticatePage'
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Questionnaire from "@/pages/UserQuestionnaire.jsx";
 import AIExplainer from './components/GoogleAI.jsx';
+import AppointmentPage from "./pages/AppointmentPage.jsx";
 // import NavBar from './components/NavBar.jsx'
 
 const App = () => {
