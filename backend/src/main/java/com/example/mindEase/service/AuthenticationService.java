@@ -1,10 +1,7 @@
 package com.example.mindEase.service;
 
-import com.example.mindEase.config.security.token.AccessToken;
 import com.example.mindEase.config.security.token.AccessTokenEncoder;
 import com.example.mindEase.config.security.token.impl.AccessTokenImpl;
-import com.example.mindEase.controllers.AuthenticationController;
-import com.example.mindEase.dto.CreateUserResponse;
 import com.example.mindEase.dto.LoginRequest;
 import com.example.mindEase.dto.LoginResponse;
 import com.example.mindEase.exception.InvalidCredentialsException;
@@ -13,10 +10,6 @@ import com.example.mindEase.user.Role;
 import com.example.mindEase.user.User;
 import com.example.mindEase.user.UserRepository;
 import com.example.mindEase.user.UserRoleEntity;
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -49,16 +42,14 @@ public class AuthenticationService extends DefaultOAuth2UserService {
             return LoginResponse.builder().accessToken(accessToken).build();
         }
 
-        public CreateUserResponse createUser(@RequestBody LoginRequest request) {
+        public void createUser(@RequestBody LoginRequest request) {
             if(userRepository.existsByEmail(request.getEmail())) {
                 throw new UserAlreadyExistsException();
             }
 
             User tempUser = User.builder().email(request.getEmail()).password(request.getPassword()).verified(false).build();
 
-            User savedUser = saveNewUser(tempUser);
-
-            return CreateUserResponse.builder().id(savedUser.getId()).build();
+            saveNewUser(tempUser);
         }
 
         private User saveNewUser(@RequestBody User request) {

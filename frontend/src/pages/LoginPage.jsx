@@ -4,14 +4,18 @@ import NavBar from "../components/NavBar.jsx"
 import loginImage from "@/assets/pictures/login.svg"
 import axios from "axios"
 import {useAuth} from "../services/AuthProvider.jsx"
-import {useNavigate} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 
 const LoginPage = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
-    const {login} = useAuth()
+    const {login, isAuthenticated} = useAuth()
     const navigate = useNavigate()
+
+    if(isAuthenticated) {
+        navigate('/')
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -104,6 +108,9 @@ const LoginPage = () => {
                         >
                             Login
                         </Button>
+                        <Typography>
+                            Haven't registered yet? <Link to="/register">Register here</Link>
+                        </Typography>
                     </Box>
                 </Paper>
             </Box>
