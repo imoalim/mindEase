@@ -19,6 +19,8 @@ public class ExerciseController {
     // Retrieve all exercises
     @GetMapping
     public List<Exercise> getAllExercises() {
+        List<Exercise> exercises = exerciseService.getAllExercises();
+
         return exerciseService.getAllExercises();
     }
 

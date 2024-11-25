@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Entity
 @Table(name = "exercises")
 @Data
@@ -27,8 +30,7 @@ public class Exercise {
     private String duration;
 
     @NotNull
-    @Lob
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
     @NotNull
@@ -40,4 +42,14 @@ public class Exercise {
     private String type;
 
     private String image;
+
+    @Transient
+    public List<String> getDescription() {
+        if (description == null || description.isBlank()) {
+            return List.of();
+        }
+        return Arrays.stream(description.split(","))
+                .map(String::trim)
+                .toList();
+    }
 }

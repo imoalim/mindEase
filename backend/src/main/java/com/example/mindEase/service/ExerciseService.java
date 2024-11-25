@@ -2,18 +2,15 @@ package com.example.mindEase.service;
 
 import com.example.mindEase.exercise.Exercise;
 import com.example.mindEase.exercise.ExerciseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ExerciseService {
-
     private final ExerciseRepository exerciseRepository;
-
-    public ExerciseService(ExerciseRepository exerciseRepository) {
-        this.exerciseRepository = exerciseRepository;
-    }
 
     // Save a new exercise
     public Exercise saveExercise(Exercise exercise) {
@@ -22,7 +19,10 @@ public class ExerciseService {
 
     // Retrieve all exercises
     public List<Exercise> getAllExercises() {
-        return exerciseRepository.findAll();
+        return exerciseRepository.findAll()
+                .stream()
+                .peek(Exercise::getDescription)
+                .toList();
     }
 
     public List<Exercise> getExercisesByType(String type) {
