@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import NavBar from '@/components/NavBar';
 import '@/App.css';
+import client from "../axios/APIinitializer.jsx";
 
 const ResourcesPage = () => {
     const [exercises, setExercises] = useState([]);
@@ -11,7 +11,7 @@ const ResourcesPage = () => {
     useEffect(() => {
         const fetchExercises = async () => {
             try {
-                const response = await axios.get('/api/exercises');
+                const response = await client.get('/api/exercises');
                 setExercises(response.data);
                 setLoading(false);
             } catch (err) {
@@ -34,7 +34,7 @@ const ResourcesPage = () => {
                 <h1 className="resources-title">Mental Health Exercises</h1>
                 <p className="resources-subtitle">Explore evidence-based exercises for mental well-being:</p>
                 <div className="resources-grid">
-                    {exercises.map((exercise, index) => (
+                    {exercises && exercises.map((exercise, index) => (
                         <div key={index} className="exercise-card">
                             <p className="exercise-type">{exercise.type}</p>
                             <img src={exercise.image} alt={exercise.title} className="exercise-image" />

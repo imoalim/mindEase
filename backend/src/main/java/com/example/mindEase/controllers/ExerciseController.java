@@ -2,6 +2,7 @@ package com.example.mindEase.controllers;
 
 import com.example.mindEase.exercise.Exercise;
 import com.example.mindEase.service.ExerciseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,14 +11,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/exercises")
 public class ExerciseController {
-
     private final ExerciseService exerciseService;
-
-    public ExerciseController(ExerciseService exerciseService) {
-        this.exerciseService = exerciseService;
-    }
 
     // Retrieve all exercises
     @GetMapping
