@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import PrivateRoutes from "./components/PrivateRoutes.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import ResourcesPage from './pages/Resources.jsx';
 // import NavBar from './components/NavBar.jsx'
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/appointment-page" element={<AppointmentPage />} />
           <Route path="/questionnaire" element={<Questionnaire />} />
           <Route path="/suggestions" element={<AIExplainer />} />
+          <Route path="/resources" element={<ResourcesPage />} />
         </Routes>
       </Router>
     </AuthProvider>
