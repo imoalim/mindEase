@@ -12,7 +12,8 @@ const ResourcesPage = () => {
         const fetchExercises = async () => {
             try {
                 const response = await axios.get('/api/exercises');
-                setExercises(response.data);
+                const dataArray = Array.isArray(response.data) ? response.data : Object.values(response.data);
+                setExercises(dataArray);
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching exercises:', err);
@@ -20,7 +21,7 @@ const ResourcesPage = () => {
                 setLoading(false);
             }
         };
-
+    
         fetchExercises();
     }, []);
 
