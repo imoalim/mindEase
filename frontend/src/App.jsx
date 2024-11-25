@@ -7,8 +7,11 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import PrivateRoutes from "./components/PrivateRoutes.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+
 import QuestionnairePage from './pages/UserQuestionnairePage.jsx';
 import RecommendationsPage from './components/RecommendationsPage.jsx';
+import ResourcesPage from './pages/Resources.jsx';
+
 
 
 const App = () => {
@@ -24,8 +27,10 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/appointment-page" element={<AppointmentPage />} />
+
           <Route path="/questionnaire" element={<QuestionnairePage />} />
           <Route path="/suggestions" element={<RecommendationsPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
         </Routes>
       </Router>
     </AuthProvider>
