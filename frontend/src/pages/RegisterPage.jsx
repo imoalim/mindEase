@@ -11,6 +11,7 @@ const RegisterPage = () => {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [error, setError] = useState(null)
+    const [errors, setErrors] = useState({})
     const [success, setSuccess] = useState(null)
     const navigate = useNavigate()
     const {login, isAuthenticated} = useAuth()
@@ -37,8 +38,15 @@ const RegisterPage = () => {
 
             navigate("/complete-profile");
         } catch (err) {
-            console.error("Error registering or logging in:", err.response?.data || err.message)
-            setError(err.response?.data?.message || "An error occurred during registration.")
+            if (error.errors) {
+                const fieldErrors = error.errors.reduce((acc, err) => {
+                    acc[err.field] = err.error
+                    return acc
+                }, {})
+                setErrors(fieldErrors)
+            } else {
+                setError(err.response?.data?.message || "An error occurred during registration.")
+            }
         }
     };
 
@@ -109,6 +117,15 @@ const RegisterPage = () => {
                             required
                             fullWidth
                         />
+                        {errors.email && (
+                            <Typography
+                                variant="body2"
+                                color="error"
+                                sx={{ marginBottom: 2 }}
+                            >
+                                {errors.email}
+                            </Typography>
+                        )}
                         <TextField
                             label="Password"
                             type="password"
@@ -117,6 +134,15 @@ const RegisterPage = () => {
                             required
                             fullWidth
                         />
+                        {errors.password && (
+                            <Typography
+                                variant="body2"
+                                color="error"
+                                sx={{ marginBottom: 2 }}
+                            >
+                                {errors.password}
+                            </Typography>
+                        )}
                         <TextField
                             label="Confirm Password"
                             type="password"

@@ -71,14 +71,12 @@ const CompleteProfilePage = () => {
             })
             .catch(error => {
                 if (error.errors) {
-                    console.log(error.errors)
                     const fieldErrors = error.errors.reduce((acc, err) => {
                         acc[err.field] = err.error
                         return acc
                     }, {})
                     setErrors(fieldErrors)
                 } else {
-                    console.log(error)
                     setError("An error occurred while completing your profile. Please try again.")
                 }
             })
