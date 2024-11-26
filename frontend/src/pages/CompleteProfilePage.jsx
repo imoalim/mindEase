@@ -192,7 +192,7 @@ const CompleteProfilePage = () => {
                             <InputLabel id="role-label">Role</InputLabel>
                             <Select
                                 labelId="role-label"
-                                name="role"
+                                name="selectedRole"
                                 value={formData.selectedRole}
                                 onChange={handleChange}
                                 label="Role"
