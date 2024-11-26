@@ -47,7 +47,7 @@ public class AuthenticationService extends DefaultOAuth2UserService {
                 throw new UserAlreadyExistsException();
             }
 
-            User tempUser = User.builder().email(request.getEmail()).password(request.getPassword()).verified(false).build();
+            User tempUser = User.builder().email(request.getEmail()).password(request.getPassword()).build();
 
             saveNewUser(tempUser);
         }

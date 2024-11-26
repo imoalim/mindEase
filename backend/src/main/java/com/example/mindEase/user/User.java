@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -27,37 +28,32 @@ public class User {
     @Email
     private String email;
 
-    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
 
-    @NotNull
-    @Length(min = 2, max = 50)
+    @Length(min = 2, max = 255)
     @Column(name = "password")
     private String password;
 
     @Column(name = "country")
     private String country;
 
-    @DateTimeFormat(pattern = "dd-mm-YYYY")
-    @Column(name = "birthday")
+    @Column(name = "birthday", columnDefinition = "DATE")
     private LocalDate birthday;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Set<UserRoleEntity> userRoles;
 
-    @NotNull
     @ColumnDefault("false")
-    private Boolean verified;
+    private Boolean verified = false;
 
-    @NotNull
     @ColumnDefault("1")
     @Column(name = "verification_step")
-    private Integer verificationStep;
+    private Integer verificationStep = 1;
 //
 //    @Lob
 //    private String verificationAnswers;

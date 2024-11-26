@@ -29,7 +29,7 @@ const LoginPage = () => {
             );
             login(response.data.accessToken);
 
-            navigate(!isVerified ? "complete-profile" : "/")
+            navigate(!isVerified ? "/complete-profile" : "/")
         } catch (err) {
             setError(err.response.data.errors[0].error  === "INVALID_CREDENTIALS" ? "Invalid credentials" : "An error occurred");
         }

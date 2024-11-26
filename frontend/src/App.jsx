@@ -11,7 +11,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import QuestionnairePage from './pages/UserQuestionnairePage.jsx';
 import RecommendationsPage from './components/RecommendationsPage.jsx';
 import ResourcesPage from './pages/Resources.jsx';
-import RegistrationPage from "./pages/RegistrationPage.jsx";
+import CompleteProfilePage from "./pages/CompleteProfilePage.jsx";
 
 const App = () => {
   return (
@@ -26,7 +26,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/appointment-page" element={<AppointmentPage />} />
-          <Route path="/complete-profile" element={<RegistrationPage />} />
+          <Route path="/complete-profile" element={<CompleteProfilePage />} />
           <Route path="/questionnaire" element={<QuestionnairePage />} />
           <Route path="/suggestions" element={<RecommendationsPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
