@@ -1,10 +1,17 @@
 import { AppBar, Toolbar, Typography, Button } from '@mui/material'
-import { Link } from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import logo from '@/assets/pictures/logo.png'
 import {useAuth} from "../services/AuthProvider.jsx";
 
 const NavBar = () => {
-    const {isAuthenticated, logout} = useAuth();
+    const {isAuthenticated, logout} = useAuth()
+    const navigate = useNavigate()
+
+    const onLogoutClick = () => {
+        logout();
+        navigate('/')
+    }
+
     return (
         <AppBar position="static" style={{ backgroundColor: '#87CEEB' }}>
             <Toolbar>
@@ -20,7 +27,7 @@ const NavBar = () => {
                 {!isAuthenticated ?
                     <Button color="inherit" component={Link} to="/Login">Authenticate</Button>
                     :
-                    <Button color="inherit" onClick={logout}>Logout</Button>
+                    <Button color="inherit" onClick={onLogoutClick}>Logout</Button>
                 }
             </Toolbar>
         </AppBar>

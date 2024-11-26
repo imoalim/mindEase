@@ -23,6 +23,7 @@ public class UserService {
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
+
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
     }
@@ -34,7 +35,6 @@ public class UserService {
         }
         return false;
     }
-
 
     public Long saveUserEmotionalStateQuestionnaire(UserQuestionnaireRequest request){
         User user = this.findUserById(request.getUserId())

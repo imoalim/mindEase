@@ -50,6 +50,7 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
 
     private void sendAuthenticationError(HttpServletResponse response) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("{\"error\": \"Access token has expired\"}");
         response.flushBuffer();
     }
 

@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Router, useLocation } from "react-router-dom";
 import { Container, Typography, Button, Grid2 } from "@mui/material";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import NavBar from './NavBar.jsx';
+import NavBar from '../components/NavBar.jsx';
 import '../css/Questionnaire.css';
 import { ChevronRight, ChevronLeft, Verified } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import UserDetailsAPI from "../axios/UserDetailsAPI.jsx";
 import client from "../axios/APIinitializer.jsx";
+import {useAuth} from "../services/AuthProvider.jsx";
+import axios from "axios";
 
 
 
@@ -18,6 +20,33 @@ function RecommendationsPage() {
     const responses = location.state?.responses || {};
     const navigate = useNavigate();
     const [currentUserId, setCurrentUserId] = useState(null)
+    const {isAuthenticated, isVerified} = useAuth()
+
+    useEffect(() => {
+        if(!isAuthenticated || isVerified) {
+            navigate('/login')
+            return
+        }
+
+        const fetchData = async () => {
+            await client.get('/api/users/me')
+                .then(response => {
+                    const user = response.data
+                    if(user.verificationStep == 1) {
+                        navigate('/complete-profile')
+                    } else if(user.verificationStep == 2) {
+                        if (user.selectedRole !== 'USER') {
+                            navigate('/')
+                        } else {
+                            navigate('/questionnaire')
+                        }
+                    }
+                })
+                .catch(error => console.error("Error fetching user data. Error:" + error))
+        }
+
+        fetchData();
+    }, []);
 
     const createUserQuestionnairePayload = (responses) => {
         return {
