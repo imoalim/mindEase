@@ -66,8 +66,8 @@ const CompleteProfilePage = () => {
         client.put("/api/profile", formData)
             .then(() => {
                 setErrors({})
-                setSuccess("Profile completed successfully! Redirecting you to the home page...")
-                setTimeout(() => navigate('/'), 2000)
+                setSuccess("Profile completed successfully! Redirecting you to the questionnaire...")
+                setTimeout(() => navigate('/questionnaire'), 2000)
             })
             .catch(error => {
                 if (error.errors) {

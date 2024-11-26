@@ -1,4 +1,4 @@
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { Button, Box, Typography, Paper, TextField } from "@mui/material"
 import NavBar from "../components/NavBar.jsx"
 import loginImage from "@/assets/pictures/login.svg"
@@ -13,9 +13,11 @@ const LoginPage = () => {
     const {login, isAuthenticated, isVerified} = useAuth()
     const navigate = useNavigate()
 
-    if(isAuthenticated) {
-        navigate('/')
-    }
+    useEffect(() => {
+        if(isAuthenticated) {
+            navigate('/')
+        }
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
