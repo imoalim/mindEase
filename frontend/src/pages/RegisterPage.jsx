@@ -36,7 +36,9 @@ const RegisterPage = () => {
 
             login(response.data.accessToken);
 
-            navigate("/complete-profile");
+            setTimeout(() => {
+                navigate("/complete-profile");
+            }, 100)
         } catch (err) {
             if (error.errors) {
                 const fieldErrors = error.errors.reduce((acc, err) => {
