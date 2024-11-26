@@ -52,6 +52,10 @@ public class User {
     @Column(name = "verification_step")
     private Integer verificationStep = 1;
 
+    @Column(name = "selected_role")
+    @Enumerated(EnumType.STRING)
+    private Role selectedRole;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Set<UserRoleEntity> userRoles;

@@ -19,6 +19,7 @@ public class ProfileService {
         user.setLastName(request.getLastName());
         user.setCountry(request.getCountry());
         user.setBirthday(request.getBirthday());
+        user.setSelectedRole(request.getSelectedRole());
         user.setVerificationStep(2);
 
         userRepository.save(user);

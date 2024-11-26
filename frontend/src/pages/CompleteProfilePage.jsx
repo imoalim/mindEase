@@ -10,10 +10,6 @@ const CompleteProfilePage = () => {
     const {isAuthenticated, isVerified} = useAuth()
     const navigate = useNavigate()
 
-    if(!isAuthenticated || isVerified) {
-        navigate('/login')
-    }
-
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
     const [errors, setErrors] = useState({})
@@ -23,14 +19,41 @@ const CompleteProfilePage = () => {
         lastName: '',
         birthday: '',
         country: '',
+        selectedRole: '',
     })
     const [countries, setCountries] = useState([]);
 
     useEffect(() => {
-        axios.get("https://restcountries.com/v3.1/all?fields=name")
-            .then(response => setCountries(response.data.map(country => country.name.common).sort()))
-            .catch(error => console.error("Error fetching countries. Error:" + error))
+        if(!isAuthenticated || isVerified) {
+            navigate('/login')
+            return
+        }
 
+        const fetchCountries = async () => {
+            axios.get("https://restcountries.com/v3.1/all?fields=name")
+                .then(response => setCountries(response.data.map(country => country.name.common).sort()))
+                .catch(error => console.error("Error fetching countries. Error:" + error))
+        }
+
+        const fetchData = async () => {
+            await client.get('/api/users/me')
+                .then(response => {
+                    const user = response.data
+                    if (user.verificationStep == 2) {
+                        if (user.selectedRole == 'USER') {
+                            navigate('/questionnaire')
+                        } else {
+                            // navigate('/therapist')
+                        }
+                    } else if(user.verificationStep == 3) {
+                        navigate('/suggestions')
+                    }
+                    fetchCountries()
+                })
+                .catch(error => console.error("Error fetching user data. Error:" + error))
+        }
+
+        fetchData();
     }, []);
 
     const handleChange = (e) => {
@@ -104,7 +127,6 @@ const CompleteProfilePage = () => {
                         {errors.firstName && (
                             <Typography
                                 variant="body2"
-                                align="center"
                                 color="error"
                                 sx={{ marginBottom: 2 }}
                             >
@@ -122,7 +144,6 @@ const CompleteProfilePage = () => {
                         {errors.lastName && (
                             <Typography
                                 variant="body2"
-                                align="center"
                                 color="error"
                                 sx={{ marginBottom: 2 }}
                             >
@@ -141,7 +162,6 @@ const CompleteProfilePage = () => {
                         {errors.birthday && (
                             <Typography
                                 variant="body2"
-                                align="center"
                                 color="error"
                                 sx={{ marginBottom: 2 }}
                             >
@@ -164,7 +184,6 @@ const CompleteProfilePage = () => {
                         {errors.country && (
                             <Typography
                                 variant="body2"
-                                align="center"
                                 color="error"
                                 sx={{ marginBottom: 2 }}
                             >
@@ -176,13 +195,13 @@ const CompleteProfilePage = () => {
                             <Select
                                 labelId="role-label"
                                 name="role"
-                                value={formData.role}
+                                value={formData.selectedRole}
                                 onChange={handleChange}
                                 label="Role"
                             >
-                                <MenuItem value="help-seeker">Help-seeker</MenuItem>
+                                <MenuItem value="user">Help-seeker</MenuItem>
                                 <MenuItem value="therapist">Therapist</MenuItem>
-                                <MenuItem value="mentor">Mentor/Support</MenuItem>
+                                <MenuItem value="student">Psychology Student</MenuItem>
                             </Select>
                         </FormControl>
                         <Button type="submit" variant="contained" color="primary">

@@ -1,5 +1,6 @@
 package com.example.mindEase.dto;
 
+import com.example.mindEase.user.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -26,4 +27,6 @@ public class ProfileConfirmationRequest {
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
+    @NotNull
+    private Role selectedRole;
 }

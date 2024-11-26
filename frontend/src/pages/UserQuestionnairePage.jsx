@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Container,
@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import NavBar from '@/Components/NavBar'
 import '../css/Questionnaire.css'
+import client from "../axios/APIinitializer.jsx";
+import {useAuth} from "../services/AuthProvider.jsx";
 
 const questions = [
     { id: 25, text: "Sudden attacks of panic with palpitations, shortness of breath, faintness, or other frightening bodily sensations" },
@@ -32,6 +34,33 @@ const QuestionnairePage = () => {
     const [responses, setResponses] = useState({});
     const [error, setError] = useState(false);
     const navigate = useNavigate();
+    const {isAuthenticated, isVerified} = useAuth()
+
+    useEffect(() => {
+        if(!isAuthenticated || isVerified) {
+            navigate('/login')
+            return
+        }
+
+        const fetchData = async () => {
+            await client.get('/api/users/me')
+                .then(response => {
+                    const user = response.data
+                    if(user.verificationStep == 1) {
+                        navigate('/complete-profile')
+                    } else if(user.verificationStep == 2) {
+                        if (user.selectedRole !== 'USER') {
+                            navigate('/')
+                        } else {
+                            navigate('/questionnaire')
+                        }
+                    }
+                })
+                .catch(error => console.error("Error fetching user data. Error:" + error))
+        }
+
+        fetchData();
+    }, []);
 
     const handleResponseChange = (questionId, value) => {
         setResponses(prevResponses => ({

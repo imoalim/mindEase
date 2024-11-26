@@ -9,7 +9,7 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 
 import QuestionnairePage from './pages/UserQuestionnairePage.jsx';
-import RecommendationsPage from './components/RecommendationsPage.jsx';
+import RecommendationsPage from './pages/RecommendationsPage.jsx';
 import ResourcesPage from './pages/Resources.jsx';
 import CompleteProfilePage from "./pages/CompleteProfilePage.jsx";
 
