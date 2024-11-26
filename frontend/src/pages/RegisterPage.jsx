@@ -1,4 +1,4 @@
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { Button, Box, Typography, Paper, TextField } from "@mui/material"
 import NavBar from "../components/NavBar.jsx"
 import registerImage from "@/assets/pictures/login.svg";
@@ -16,9 +16,11 @@ const RegisterPage = () => {
     const navigate = useNavigate()
     const {login, isAuthenticated} = useAuth()
 
-    if(isAuthenticated) {
-        navigate('/')
-    }
+    useEffect(() => {
+        if(isAuthenticated) {
+            navigate('/')
+        }
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault()
