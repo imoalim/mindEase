@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import PrivateRoutes from "./components/PrivateRoutes.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import TherapistsAppointmentsPage from "@/pages/TherapistsAppointmentsPage.jsx";
 // import NavBar from './components/NavBar.jsx'
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
         <Routes>
           <Route element={<PrivateRoutes />} >
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/appointments" element={<TherapistsAppointmentsPage/>}/>
           </Route>
           <Route path="/" element={<HomePage />} />
           <Route path="/therapy-services" element={<TherapyServices />} />
