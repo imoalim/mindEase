@@ -1,4 +1,4 @@
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { Button, Box, Typography, Paper, TextField } from "@mui/material"
 import NavBar from "../components/NavBar.jsx"
 import loginImage from "@/assets/pictures/login.svg"
@@ -10,12 +10,14 @@ const LoginPage = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
-    const {login, isAuthenticated} = useAuth()
+    const {login, isAuthenticated, isVerified} = useAuth()
     const navigate = useNavigate()
 
-    if(isAuthenticated) {
-        navigate('/')
-    }
+    useEffect(() => {
+        if(isAuthenticated) {
+            navigate('/')
+        }
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -28,8 +30,9 @@ const LoginPage = () => {
                 }}
             );
             login(response.data.accessToken);
-            navigate('/')
-            // Redirect or show success message
+            setTimeout(() => {
+                navigate(!isVerified ? "/complete-profile" : "/")
+            }, 100)
         } catch (err) {
             setError(err.response.data.errors[0].error  === "INVALID_CREDENTIALS" ? "Invalid credentials" : "An error occurred");
         }

@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS Users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     password varchar(255) NOT NULL,
+    verified BOOLEAN DEFAULT FALSE
+
 );
 
 CREATE TABLE IF NOT EXISTS UserQuestionnaire (
@@ -62,10 +64,20 @@ CREATE TABLE IF NOT EXISTS Feedbacks (
     appointmentId INT REFERENCES Appointments(id)
 );
 
-CREATE TABLE IF NOT EXISTS `user_roles` (
+CREATE TABLE IF NOT EXISTS user_roles (
     id       SERIAL PRIMARY KEY,
     user_id   INT REFERENCES Users(id),
     role_name varchar(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS  `exercises` (
+    id       SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    duration VARCHAR(50),
+    description TEXT,
+    benefits TEXT,
+    type VARCHAR(255),
+    image VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 -- optional example data
