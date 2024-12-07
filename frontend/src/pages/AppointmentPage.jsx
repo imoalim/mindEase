@@ -1,21 +1,38 @@
 import { useState, useEffect } from 'react';
-import { Typography, Button, Grid, Card, CardContent, Paper } from '@mui/material';
+import {Typography, Button, Grid2, Card, CardContent, Paper, CardHeader} from '@mui/material';
 import '@/AppointmentApp.css'
 import client from "@/axios/APIinitializer.jsx";
 import NavBar from "@/components/NavBar.jsx";
+import {useAuth} from "@/services/AuthProvider.jsx";
+import {useNavigate} from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 
 const AppointmentPage = () => {
     const [appointments, setAppointments] = useState([]);
+    const { user, isAuthenticated } = useAuth();
+    const navigate = useNavigate()
+    const [error, setError] = useState("");
+
+    if (!isAuthenticated) {
+        navigate('/login')
+    }
+
+    const getAppointments = async () =>{
+        try{
+            const response = await client.get(`/api/appointments/user/${user.userId}`);
+            setAppointments(response.data);
+        } catch(error) {
+                console.error("There was an error fetching the appointments!", error);
+                setError("Error loading appointments.");
+            }
+    };
 
     useEffect(() => {
-        client.get('/api/appointments')
-            .then(response => {
-                setAppointments(response.data);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the appointments!", error);
-            });
-    }, []);
+        if (user) {
+            getAppointments();
+        }
+    }, [user]);
 
     const handleBookAppointment = () => {
         console.log('Booking a new appointment...');
@@ -29,42 +46,55 @@ const AppointmentPage = () => {
                     Your Appointments
                 </Typography>
 
-                <Typography variant="body1" paragraph align="center">
+                <Typography variant="body1"  align="center">
                     View your upcoming appointments or book a new one. Our therapists are here to assist you professionally and confidentially.
                 </Typography>
 
-                <Grid container spacing={3} justifyContent="center">
-                    {appointments && appointments.length > 0 ? (
-                        appointments.map((appointment) => (
-                            <Grid item xs={12} sm={6} md={4} key={appointment.id}>
-                                <Card variant="outlined" style={{ minHeight: '200px', display: 'flex', flexDirection: 'column' }}>
-                                    <CardContent>
-                                        <Typography variant="h5" component="div" style={{ color: '#333' }}>
-                                            Appointment on {new Date(appointment.appointment_date_time).toLocaleString()}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            Status: {appointment.status}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" paragraph>
-                                            Notes: {appointment.notes}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            Therapist ID: {appointment.therapist_id} | User ID: {appointment.user_id}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        ))
-                    ) : (
-                        <Grid item xs={12}>
-                            <Paper style={{ padding: '20px', textAlign: 'center' }}>
-                                <Typography variant="body1" color="text.secondary">
-                                    You have no upcoming appointments. Book one now to get started!
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    )}
-                </Grid>
+                {error ?
+                    <h1>Error occurred while loading data</h1> :
+                    <Grid2 container spacing={5} >
+                        {appointments && appointments.length > 0 ? (
+                            appointments.map((appointment) => (
+                                <Grid2 item sm={6} md={4} key={appointment.id}>
+                                    <Card variant="outlined" style={{ minHeight: '200px', display: 'flex', flexDirection: 'column' }}>
+                                        <CardHeader
+                                            action={
+                                                <IconButton aria-label="settings">
+                                                    <EditIcon />
+                                                </IconButton>
+                                            }
+                                            title={`Appointment #${appointment.id}`}
+                                        />
+                                        <CardContent style={{ alignItems:'center', justifyContent: 'center'}}>
+                                            <Typography variant="body2" color="text.secondary">
+                                                <strong> Date & time</strong>: {new Date(appointment.appointmentDateTime).toLocaleString()}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                <strong> Status</strong>: {appointment.status}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" >
+                                                <strong>Notes</strong>: {appointment.notes}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                <strong>Patient</strong>: {appointment.user.firstName +" " + appointment.user.lastName}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid2>
+
+                            ))
+                        ) : (
+                            <Grid2 xs={12}>
+                                <Paper style={{ padding: '20px', textAlign: 'center' }}>
+                                    <Typography variant="body1" color="text.secondary">
+                                        You have no upcoming appointments.
+                                    </Typography>
+                                </Paper>
+                            </Grid2>
+                        )}
+                    </Grid2>
+                }
+
 
                 <div className="book-appointment" style={{ marginTop: '30px', textAlign: 'center' }}>
                     <Button

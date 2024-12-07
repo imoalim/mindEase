@@ -3,7 +3,10 @@ package com.example.mindEase.service;
 import com.example.mindEase.appointment.Appointment;
 import com.example.mindEase.appointment.AppointmentRepository;
 import com.example.mindEase.user.User;
+import org.hibernate.ObjectNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,5 +45,12 @@ public class AppointmentService {
     // Termin löschen
     public void deleteAppointment(Long id) {
         appointmentRepository.deleteById(id);
+    }
+
+    public Appointment updateAppointment(Appointment appointment) {
+        if (!appointmentRepository.existsById(appointment.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The appointment does not exist");
+        }
+        return appointmentRepository.save(appointment);
     }
 }
