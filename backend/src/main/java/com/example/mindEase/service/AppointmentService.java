@@ -20,6 +20,9 @@ public class AppointmentService {
 
     // Einen neuen Termin speichern
     public Appointment saveAppointment(Appointment appointment) {
+        if (appointment.getAppointmentDateTime().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Appointment time cannot be in the past");
+        }
         return appointmentRepository.save(appointment);
     }
 

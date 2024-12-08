@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Typography, Button, Grid, Card, CardContent, Paper } from '@mui/material';
-import '@/AppointmentApp.css'
-import client from "@/axios/APIinitializer.jsx";
-import NavBar from "@/components/NavBar.jsx";
+import { useNavigate } from 'react-router-dom';
+import '@/AppointmentApp.css';
+import client from '@/axios/APIinitializer';
+import NavBar from '@/components/NavBar';
 
 const AppointmentPage = () => {
     const [appointments, setAppointments] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         client.get('/api/appointments')
@@ -18,7 +20,7 @@ const AppointmentPage = () => {
     }, []);
 
     const handleBookAppointment = () => {
-        console.log('Booking a new appointment...');
+        navigate('/book-appointment');
     };
 
     return (
