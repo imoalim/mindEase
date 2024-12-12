@@ -3,11 +3,15 @@ package com.example.mindEase.controllers;
 import com.example.mindEase.appointment.Appointment;
 import com.example.mindEase.service.AppointmentService;
 import com.example.mindEase.user.User;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -25,6 +29,9 @@ public class AppointmentController {
     // Einen neuen Termin erstellen
     @PostMapping
     public Appointment createAppointment(@RequestBody Appointment appointment) {
+//        ZonedDateTime zonedDateTime = appointment.getAppointmentDateTime().withZoneSameInstant(ZoneOffset.UTC);
+//        appointment.setAppointmentDateTime(zonedDateTime);
+
         return appointmentService.saveAppointment(appointment);
     }
 
@@ -50,5 +57,14 @@ public class AppointmentController {
     @DeleteMapping("/{id}")
     public void deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Appointment> updateAppointment(@RequestBody Appointment appointment) {
+//        ZonedDateTime zonedDateTime = appointment.getAppointmentDateTime().withZoneSameInstant(ZoneOffset.UTC);
+//        appointment.setAppointmentDateTime(zonedDateTime);
+
+        Appointment updatedAppointment = appointmentService.updateAppointment(appointment);
+        return ResponseEntity.ok(updatedAppointment);
     }
 }
