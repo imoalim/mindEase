@@ -13,7 +13,7 @@ public class MindEaseApplication {
 	public static void main(String[] args) {
 		// Load environment variables from .env file located in the backend directory
 		Dotenv dotenv = Dotenv.configure()
-				.directory("../")  // Gehe ein Verzeichnis höher, um die .env-Datei zu finden
+				.directory("./")
 				.load();
 
 		// Set .env variables as system properties so application.properties can read them
@@ -23,17 +23,17 @@ public class MindEaseApplication {
 	}
 
 	// CORS configuration
-	@Bean
-	public CorsFilter corsFilter() {
-		CorsConfiguration config = new CorsConfiguration();
-		config.addAllowedOrigin("http://localhost:5173"); // Frontend-URL
-		config.addAllowedHeader("*"); // Allow all headers
-		config.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, OPTIONS, etc.)
-		config.setAllowCredentials(true); // Allow cookies and authorization headers
-
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", config);
-
-		return new CorsFilter(source);
-	}
+//	@Bean
+//	public CorsFilter corsFilter() {
+//		CorsConfiguration config = new CorsConfiguration();
+//		config.addAllowedOrigin("http://localhost:5173"); // Frontend-URL
+//		config.addAllowedHeader("*"); // Allow all headers
+//		config.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, OPTIONS, etc.)
+//		config.setAllowCredentials(true); // Allow cookies and authorization headers
+//
+//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//		source.registerCorsConfiguration("/**", config);
+//
+//		return new CorsFilter(source);
+//	}
 }
