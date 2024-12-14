@@ -8,6 +8,7 @@ import PrivateRoutes from "./components/PrivateRoutes.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import TherapistsAppointmentsPage from "@/pages/TherapistsAppointmentsPage.jsx";
+import BookAppointmentPage from "./pages/BookAppointmentPage.jsx";
 // import NavBar from './components/NavBar.jsx'
 
 import QuestionnairePage from './pages/UserQuestionnairePage.jsx';
@@ -23,6 +24,8 @@ const App = () => {
           <Route element={<PrivateRoutes />} >
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/appointments" element={<TherapistsAppointmentsPage/>}/>
+              <Route path="/book-appointments" element={<BookAppointmentPage />} />
+
           </Route>
           <Route path="/" element={<HomePage />} />
           <Route path="/therapy-services" element={<TherapyServices />} />

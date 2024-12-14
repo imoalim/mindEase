@@ -28,6 +28,10 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+
+    public List<User> findAllTherapists() {
+        return userRepository.findAllTherapists();
+    }
     public boolean deleteUserById(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
