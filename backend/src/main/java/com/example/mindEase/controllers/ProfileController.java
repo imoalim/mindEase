@@ -21,8 +21,8 @@ import java.util.Optional;
 public class ProfileController {
      private final ProfileService profileService;
 
-     @PutMapping
-     public ResponseEntity<User> updateProfile(@RequestBody @Valid ProfileConfirmationRequest request) {
+     @PutMapping(consumes = {"multipart/form-data"})
+     public ResponseEntity<User> updateProfile(@ModelAttribute @Valid ProfileConfirmationRequest request) {
           Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
           AccessToken accessToken = (AccessToken) authentication.getDetails();
 

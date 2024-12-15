@@ -52,22 +52,22 @@ public class AuthenticationService extends DefaultOAuth2UserService {
             saveNewUser(tempUser);
         }
 
-        private User saveNewUser(@RequestBody User request) {
+        private void saveNewUser(@RequestBody User request) {
             String encodedPassword = passwordEncoder.encode(request.getPassword());
 
             User newUser = User.builder()
-                    .email(request.getEmail())
-                    .password(encodedPassword)
-                    .verified(false)
-                    .build();
+                .email(request.getEmail())
+                .password(encodedPassword)
+                .verified(false)
+                .build();
 
             newUser.setUserRoles(Set.of(
-                    UserRoleEntity.builder()
-                            .user(newUser)
-                            .role(Role.USER)
-                            .build()));
+                UserRoleEntity.builder()
+                    .user(newUser)
+                    .role(Role.USER)
+                    .build()));
 
-            return userRepository.save(newUser);
+            userRepository.save(newUser);
         }
 
         private boolean matchesPassword(String rawPassword, String encodedPassword) {
