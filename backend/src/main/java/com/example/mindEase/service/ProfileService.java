@@ -6,6 +6,12 @@ import com.example.mindEase.user.User;
 import com.example.mindEase.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
@@ -20,9 +26,32 @@ public class ProfileService {
         user.setCountry(request.getCountry());
         user.setBirthday(request.getBirthday());
         user.setSelectedRole(request.getSelectedRole());
-        user.setVerificationStep(2);
+        user.setUniversity(request.getUniversity());
+        user.setQualifications(request.getQualifications());
+        if (request.getEnrollmentDocument() != null && !request.getEnrollmentDocument().isEmpty()) {
+            String filePath = saveFile(request.getEnrollmentDocument(), user.getId());
+            user.setEnrollmentDocumentPath(filePath);
+        }
+        user.setVerificationStep(3);
 
         userRepository.save(user);
         return user;
+    }
+
+    private String saveFile(MultipartFile file, Long userId) {
+        try {
+            String UPLOAD_DIR = "uploads/"; // TODO: change this approach: Directory to store uploaded files
+            if (!Files.exists(Paths.get(UPLOAD_DIR))) {
+                Files.createDirectories(Paths.get(UPLOAD_DIR));
+            }
+
+            String fileName = userId + "_" + file.getOriginalFilename();
+            Path filePath = Paths.get(UPLOAD_DIR + fileName);
+            Files.write(filePath, file.getBytes());
+
+            return filePath.toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Error saving file: " + e.getMessage());
+        }
     }
 }
