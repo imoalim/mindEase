@@ -1,56 +1,75 @@
-import {useEffect, useState} from "react"
-import { Button, Box, Typography, Paper, TextField } from "@mui/material"
-import NavBar from "../components/NavBar.jsx"
+import { useEffect, useState } from "react";
+import { Button, Box, Typography, Paper, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import NavBar from "../components/NavBar.jsx";
 import registerImage from "@/assets/pictures/login.svg";
-import axios from "axios"
-import {Link, useNavigate} from "react-router-dom"
-import {useAuth} from "../services/AuthProvider.jsx";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../services/AuthProvider.jsx";
 
 const RegisterPage = () => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
-    const [error, setError] = useState(null)
-    const [errors, setErrors] = useState({})
-    const [success, setSuccess] = useState(null)
-    const navigate = useNavigate()
-    const {login, isAuthenticated} = useAuth()
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [role, setRole] = useState(""); // Rolle
+    const [university, setUniversity] = useState(""); // Zusätzliche Eingabe für Studenten
+    const [qualification, setQualification] = useState(""); // Eingabe für Qualifikationen
+    const [error, setError] = useState(null);
+    const [errors, setErrors] = useState({});
+    const [success, setSuccess] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const { login, isAuthenticated } = useAuth();
 
     useEffect(() => {
-        if(isAuthenticated) {
-            navigate('/')
+        if (isAuthenticated) {
+            navigate("/");
         }
     }, []);
 
     const handleSubmit = async (event) => {
-        event.preventDefault()
-        setError(null)
-        setSuccess(null)
+        event.preventDefault();
+        setError(null);
+        setErrors({});
+        setSuccess(null);
 
+        // Validierung: Passwort-Übereinstimmung
         if (password !== confirmPassword) {
-            setError("Passwords do not match.")
+            setError("Passwords do not match.");
             return;
         }
 
+
+        setLoading(true);
         try {
-            const response = await axios.post("http://localhost:8080/auth/register", { email, password })
-            setSuccess("Registration successful! Logging you in...")
+            // Payload erstellen
+            const payload = {
+                email,
+                password,
+                role
+            };
+
+            const response = await axios.post("http://localhost:8080/auth/register", payload);
+            setSuccess("Registration successful! Logging you in...");
 
             login(response.data.accessToken);
 
             setTimeout(() => {
                 navigate("/complete-profile");
-            }, 100)
+            }, 100);
         } catch (err) {
-            if (error.errors) {
-                const fieldErrors = error.errors.reduce((acc, err) => {
-                    acc[err.field] = err.error
-                    return acc
-                }, {})
-                setErrors(fieldErrors)
+            console.error("Registration error:", err);
+
+            if (err.response?.data?.errors) {
+                const fieldErrors = err.response.data.errors.reduce((acc, fieldError) => {
+                    acc[fieldError.field] = fieldError.error;
+                    return acc;
+                }, {});
+                setErrors(fieldErrors);
             } else {
-                setError(err.response?.data?.message || "An error occurred during registration.")
+                setError(err.response?.data?.message || "An unexpected error occurred. Please try again.");
             }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -85,34 +104,16 @@ const RegisterPage = () => {
                         Register for MindEase
                     </Typography>
                     {error && (
-                        <Typography
-                            variant="body2"
-                            align="center"
-                            color="error"
-                            sx={{ marginBottom: 2 }}
-                        >
+                        <Typography variant="body2" align="center" color="error" sx={{ marginBottom: 2 }}>
                             {error}
                         </Typography>
                     )}
                     {success && (
-                        <Typography
-                            variant="body2"
-                            align="center"
-                            color="success"
-                            sx={{ marginBottom: 2 }}
-                        >
+                        <Typography variant="body2" align="center" color="success" sx={{ marginBottom: 2 }}>
                             {success}
                         </Typography>
                     )}
-                    <Box
-                        component="form"
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 2,
-                        }}
-                        onSubmit={handleSubmit}
-                    >
+                    <Box component="form" sx={{ display: "flex", flexDirection: "column", gap: 2 }} onSubmit={handleSubmit}>
                         <TextField
                             label="Email"
                             type="email"
@@ -121,15 +122,6 @@ const RegisterPage = () => {
                             required
                             fullWidth
                         />
-                        {errors.email && (
-                            <Typography
-                                variant="body2"
-                                color="error"
-                                sx={{ marginBottom: 2 }}
-                            >
-                                {errors.email}
-                            </Typography>
-                        )}
                         <TextField
                             label="Password"
                             type="password"
@@ -138,15 +130,6 @@ const RegisterPage = () => {
                             required
                             fullWidth
                         />
-                        {errors.password && (
-                            <Typography
-                                variant="body2"
-                                color="error"
-                                sx={{ marginBottom: 2 }}
-                            >
-                                {errors.password}
-                            </Typography>
-                        )}
                         <TextField
                             label="Confirm Password"
                             type="password"
@@ -155,13 +138,9 @@ const RegisterPage = () => {
                             required
                             fullWidth
                         />
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                        >
-                            Register
+
+                        <Button type="submit" variant="contained" color="primary" fullWidth disabled={loading}>
+                            {loading ? "Registering..." : "Register"}
                         </Button>
                         <Typography>
                             Already registered? <Link to="/login">Login here</Link>

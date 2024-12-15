@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -29,4 +30,5 @@ public class ProfileConfirmationRequest {
     private LocalDate birthday;
     @NotNull
     private Role selectedRole;
+    private MultipartFile enrollmentDocument;
 }

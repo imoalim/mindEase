@@ -29,12 +29,25 @@ const LoginPage = () => {
                     "Content-Type": "application/json",
                 }}
             );
-            login(response.data.accessToken);
-            setTimeout(() => {
-                navigate(!isVerified ? "/complete-profile" : "/")
-            }, 100)
+            // Token aus der Antwort speichern
+            const accessToken = response.data.accessToken;
+            console.log("access:"+accessToken);
+            if (accessToken) {
+                localStorage.setItem("token", accessToken);
+                login(accessToken); // Aktualisiere Auth-Status im Context
+
+                // Navigation nach dem Login
+                setTimeout(() => {
+                    navigate(!isVerified ? "/complete-profile" : "/");
+                }, 100);
+            }
         } catch (err) {
-            setError(err.response.data.errors[0].error  === "INVALID_CREDENTIALS" ? "Invalid credentials" : "An error occurred");
+            console.error("Error during login:", err);
+            setError(
+                err.response?.data?.errors?.[0]?.error === "INVALID_CREDENTIALS"
+                    ? "Invalid credentials"
+                    : "An error occurred"
+            );
         }
     };
 
