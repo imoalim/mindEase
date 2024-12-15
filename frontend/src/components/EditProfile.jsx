@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Box, TextField, Button, Typography, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import axios from 'axios';
 import client from '../axios/APIinitializer.jsx';
-
 const EditProfile = ({ user, onCancel, onSave }) => {
     const [formData, setFormData] = useState({
         email: user.email,
@@ -10,14 +9,13 @@ const EditProfile = ({ user, onCancel, onSave }) => {
         lastName: user.lastName,
         country: user.country,
         birthday: user.birthday,
-        selectedRole: user.selectedRole, // Include selectedRole in formData
+        selectedRole: user.selectedRole,
     });
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [birthdayError, setBirthdayError] = useState('');
     const [countries, setCountries] = useState([]);
-
     useEffect(() => {
         const fetchCountries = async () => {
             axios.get("https://restcountries.com/v3.1/all?fields=name")
@@ -26,7 +24,6 @@ const EditProfile = ({ user, onCancel, onSave }) => {
         };
         fetchCountries();
     }, []);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -34,11 +31,9 @@ const EditProfile = ({ user, onCancel, onSave }) => {
             [name]: value,
         });
     };
-
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isValidDate(formData.birthday)) {
@@ -46,17 +41,23 @@ const EditProfile = ({ user, onCancel, onSave }) => {
             return;
         }
         setLoading(true);
-        const data = new FormData();
-        data.append('profileData', new Blob([JSON.stringify(formData)], { type: 'application/json' }));
-        if (file) {
-            data.append('enrollmentDocument', file);
-        }
+        const data = {
+            email: formData.email,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            country: formData.country,
+            birthday: formData.birthday,
+            selectedRole: formData.selectedRole,
+        };
         try {
             await client.put('/api/profile', data, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                 },
             });
+            if (formData.selectedRole === 'therapist' && file) {
+                await uploadFile(file);
+            }
             onSave(); // Refresh the user data after successful update
             onCancel(); // Close the edit form after successful update
         } catch (error) {
@@ -66,7 +67,21 @@ const EditProfile = ({ user, onCancel, onSave }) => {
             setLoading(false);
         }
     };
-
+    
+    const uploadFile = async (file) => {
+        const formData = new FormData();
+        formData.append('enrollmentDocument', file);
+        try {
+            await client.post('/api/profile/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            setError(error.response?.data?.message || 'Failed to upload file.');
+        }
+    };
     const isValidDate = (dateString) => {
         const regex = /^\d{4}-\d{2}-\d{2}$/;
         if (!dateString.match(regex)) return false;
@@ -75,7 +90,6 @@ const EditProfile = ({ user, onCancel, onSave }) => {
         if (typeof timestamp !== 'number' || Number.isNaN(timestamp)) return false;
         return dateString === date.toISOString().split('T')[0];
     };
-
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
             <Typography variant="h5" gutterBottom>
@@ -150,5 +164,4 @@ const EditProfile = ({ user, onCancel, onSave }) => {
         </Box>
     );
 };
-
 export default EditProfile;
