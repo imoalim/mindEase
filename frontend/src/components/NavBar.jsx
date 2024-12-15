@@ -4,7 +4,7 @@ import logo from '@/assets/pictures/logo.png'
 import {useAuth} from "../services/AuthProvider.jsx";
 
 const NavBar = () => {
-    const {isAuthenticated, logout} = useAuth()
+    const {isAuthenticated, logout, user} = useAuth()
     const navigate = useNavigate()
 
     const onLogoutClick = () => {
@@ -21,9 +21,27 @@ const NavBar = () => {
                 </Typography>
 
                 <Button color="inherit" component={Link} to="/">Home</Button>
-                <Button color="inherit" component={Link} to="/therapy-services">Therapy Services</Button>
-                <Button color="inherit" component={Link} to="/self-assessment">Self-Assessment</Button>
-                <Button color="inherit" component={Link} to="/resources">Resources</Button>
+
+                {user && user.roles.find(role => role==="ADMIN") &&
+                    <Button color="inherit" component={Link} to="/admin/therapists-verification">Verification</Button>
+                }
+
+                {user && user.roles.find(role => role==="THERAPIST" || role === "PSYCHOLOGY_STUDENT") &&
+                    <Button color="inherit" component={Link} to="/appointments">Appointments</Button>
+                }
+
+                {user && user.roles.find(role => role==="USER") &&
+                    <>
+                        <Button color="inherit" component={Link} to="/appointment-page">
+                            Therapy Services
+                        </Button>
+                        <Button color="inherit" component={Link} to="/resources">
+                            Resources
+                        </Button>
+                    </>
+                }
+
+
                 {isAuthenticated && (
                     <>
                         <Button color="inherit" component={Link} to="/profile">

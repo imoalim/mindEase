@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserQuestionnaireRepository userQuestionnaireRepository;
+    private final UserRoleRepository userRoleRepository;
 
     public User saveUser(User user) {
         return userRepository.save(user);
@@ -44,6 +46,11 @@ public class UserService {
     public User updateUserStatus(Long id){
             User userToUpdate = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("User does not exist"));
             userToUpdate.setVerified(true);
+
+            UserRoleEntity roleToUpdate = userRoleRepository.findByUserId(id);
+            roleToUpdate.setRole(Role.THERAPIST);
+            userRoleRepository.save(roleToUpdate);
+
 
         return userRepository.save(userToUpdate);
     }
