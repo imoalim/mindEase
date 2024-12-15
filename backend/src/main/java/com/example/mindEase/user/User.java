@@ -16,6 +16,7 @@ import java.util.Set;
 @Table(name = "users")
 @Data
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -55,6 +56,15 @@ public class User {
     @Column(name = "selected_role")
     @Enumerated(EnumType.STRING)
     private Role selectedRole;
+
+    @Column(name = "university")
+    private String university;
+
+    @Column(name = "qualifications")
+    private String qualifications;
+
+    @Column(name = "enrollment_document_path")
+    private String enrollmentDocumentPath;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

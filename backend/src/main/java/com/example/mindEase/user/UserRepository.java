@@ -14,5 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(@NotNull @Email String email);
 
-    List<User> findAllBySelectedRoleAndVerified(Role role, boolean status);
+    List<User> findAllBySelectedRoleAndVerified(Role selectedRole, boolean verified);
+
 }

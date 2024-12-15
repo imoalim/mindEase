@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import client from "../axios/APIinitializer.jsx";
 
 const CompleteProfilePage = () => {
-    const {isAuthenticated, isVerified} = useAuth()
+    const {isAuthenticated, isVerified, user} = useAuth()
     const navigate = useNavigate()
 
     const [success, setSuccess] = useState(false)
@@ -20,6 +20,9 @@ const CompleteProfilePage = () => {
         birthday: '',
         country: '',
         selectedRole: '',
+        university: '',
+        qualifications: '',
+        enrollmentDocument: null,
     })
     const [countries, setCountries] = useState([]);
 
@@ -35,52 +38,65 @@ const CompleteProfilePage = () => {
                 .catch(error => console.error("Error fetching countries. Error:" + error))
         }
 
-        const fetchData = async () => {
-            await client.get('/api/users/me')
-                .then(response => {
-                    const user = response.data
-                    if (user.verificationStep == 2) {
-                        if (user.selectedRole == 'USER') {
-                            navigate('/questionnaire')
-                        } else {
-                            // navigate('/therapist')
-                        }
-                    } else if(user.verificationStep == 3) {
-                        navigate('/suggestions')
-                    }
-                    fetchCountries()
-                })
-                .catch(error => console.error("Error fetching user data. Error:" + error))
+        const checkVerificationStep =  () => {
+            if(user.verificationStep == 1) {
+                navigate('/complete-profile')
+            } else if(user.verificationStep == 2) {
+                if (user.selectedRole !== 'USER') {
+                    navigate('/')
+                } else {
+                    navigate('/questionnaire')
+                }
+            }
+            fetchCountries()
         }
 
-        fetchData();
-    }, []);
+        checkVerificationStep()
+    }, [])
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-    };
+    }
+
+    const handleFileChange = (e) => {
+        setFormData({ ...formData, enrollmentDocument: e.target.files[0] })
+    }
 
     const handleSubmit = async(e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        client.put("/api/profile", formData)
-            .then(() => {
-                setErrors({})
-                setSuccess("Profile completed successfully! Redirecting you to the questionnaire...")
-                setTimeout(() => navigate('/questionnaire'), 2000)
-            })
-            .catch(error => {
-                if (error.errors) {
-                    const fieldErrors = error.errors.reduce((acc, err) => {
-                        acc[err.field] = err.error
-                        return acc
-                    }, {})
-                    setErrors(fieldErrors)
-                } else {
-                    setError("An error occurred while completing your profile. Please try again.")
+        const profileData = new FormData();
+        Object.keys(formData).forEach((key) => {
+            if (key === "enrollmentDocument") {
+                if (formData.enrollmentDocument) {
+                    profileData.append(key, formData.enrollmentDocument);
                 }
+            } else {
+                profileData.append(key, formData[key]);
+            }
+        });
+        try {
+            await client.put("/api/profile", profileData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             })
-    };
+
+            setErrors({})
+            setSuccess("Profile completed successfully! Redirecting you to the questionnaire...")
+            setTimeout(() => navigate('/questionnaire'), 2000)
+        } catch (error) {
+            if (error.errors) {
+                const fieldErrors = error.errors.reduce((acc, err) => {
+                    acc[err.field] = err.error
+                    return acc;
+                }, {})
+                setErrors(fieldErrors)
+            } else {
+                setError("An error occurred while completing your profile. Please try again.")
+            }
+        }
+    }
 
     return (
         <>
@@ -189,7 +205,7 @@ const CompleteProfilePage = () => {
                             </Typography>
                         )}
                         <FormControl variant="outlined" required>
-                            <InputLabel id="role-label">Role</InputLabel>
+                            <InputLabel id="role-label">What are you signing up as?</InputLabel>
                             <Select
                                 labelId="role-label"
                                 name="selectedRole"
@@ -197,11 +213,82 @@ const CompleteProfilePage = () => {
                                 onChange={handleChange}
                                 label="Role"
                             >
-                                <MenuItem value="user">Help-seeker</MenuItem>
-                                <MenuItem value="therapist">Therapist</MenuItem>
-                                <MenuItem value="student">Psychology Student</MenuItem>
+                                <MenuItem value="USER">Help-seeker</MenuItem>
+                                <MenuItem value="THERAPIST">Therapist</MenuItem>
+                                <MenuItem value="PSYCHOLOGY_STUDENT">Psychology Student</MenuItem>
                             </Select>
                         </FormControl>
+                        {errors.selectedRole && (
+                            <Typography
+                                variant="body2"
+                                color="error"
+                                sx={{ marginBottom: 2 }}
+                            >
+                                {errors.selectedRole}
+                            </Typography>
+                        )}
+                        {(formData.selectedRole === "PSYCHOLOGY_STUDENT" || formData.selectedRole === "THERAPIST") && (
+                            <>
+                            <FormControl variant="outlined" required>
+                                <InputLabel id="country-label">University</InputLabel>
+                                <TextField
+                                    label="University"
+                                    name="university"
+                                    value={formData.university}
+                                    onChange={handleChange}
+                                    variant="outlined"
+                                    required
+                                />
+                            </FormControl>
+                            {errors.university && (
+                                <Typography
+                                    variant="body2"
+                                    color="error"
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    {errors.university}
+                                </Typography>
+                            )}
+                            <FormControl variant="outlined" required>
+                                <InputLabel id="country-label">Qualifications</InputLabel>
+                                <TextField
+                                    label="Qualifications"
+                                    name="qualifications"
+                                    value={formData.qualifications}
+                                    onChange={handleChange}
+                                    variant="outlined"
+                                    required
+                                />
+                            </FormControl>
+                            {errors.qualifications && (
+                                <Typography
+                                    variant="body2"
+                                    color="error"
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    {errors.qualifications}
+                                </Typography>
+                            )}
+                            <FormControl variant="outlined" required>
+                                <InputLabel id="country-label">Documentation proof</InputLabel>
+                                    <input
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    accept=".pdf,.doc,.docx"
+                                    required
+                                />
+                            </FormControl>
+                            {errors.enrollmentDocument && (
+                                <Typography
+                                    variant="body2"
+                                    color="error"
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    {errors.enrollmentDocument}
+                                </Typography>
+                            )}
+                            </>
+                        )}
                         <Button type="submit" variant="contained" color="primary">
                             Continue
                         </Button>

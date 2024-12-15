@@ -34,7 +34,7 @@ const QuestionnairePage = () => {
     const [responses, setResponses] = useState({});
     const [error, setError] = useState(false);
     const navigate = useNavigate();
-    const {isAuthenticated, isVerified} = useAuth()
+    const {isAuthenticated, isVerified, user} = useAuth()
 
     useEffect(() => {
         if(!isAuthenticated || isVerified) {
@@ -42,24 +42,19 @@ const QuestionnairePage = () => {
             return
         }
 
-        const fetchData = async () => {
-            await client.get('/api/users/me')
-                .then(response => {
-                    const user = response.data
-                    if(user.verificationStep == 1) {
-                        navigate('/complete-profile')
-                    } else if(user.verificationStep == 2) {
-                        if (user.selectedRole !== 'USER') {
-                            navigate('/')
-                        } else {
-                            navigate('/questionnaire')
-                        }
-                    }
-                })
-                .catch(error => console.error("Error fetching user data. Error:" + error))
+        const checkVerificationStep=  () => {
+            if(user.verificationStep == 1) {
+                navigate('/complete-profile')
+            } else if(user.verificationStep == 2) {
+                if (user.selectedRole !== 'USER') {
+                    navigate('/')
+                } else {
+                    navigate('/questionnaire')
+                }
+            }
         }
 
-        fetchData();
+    checkVerificationStep();
     }, []);
 
     const handleResponseChange = (questionId, value) => {
