@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, MenuItem, Select, InputLabel, FormControl, Box, Typography } from "@mui/material";
 import client from "@/axios/APIinitializer.jsx"; // Adjust the import path as necessary
+import { useAuth } from "@/services/AuthProvider.jsx"; // Import the useAuth hook to get user information
 
 const BookAppointmentPage = () => {
     const [date, setDate] = useState("");
@@ -9,6 +10,7 @@ const BookAppointmentPage = () => {
     const [therapists, setTherapists] = useState([]);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
+    const { user } = useAuth(); // Get the authenticated user
 
     useEffect(() => {
         const loadTherapists = async () => {
@@ -27,10 +29,11 @@ const BookAppointmentPage = () => {
         e.preventDefault();
         try {
             const response = await client.post("/api/appointments", {
-                date,
-                time,
-                therapistId,
-                message,
+                appointmentDateTime: `${date}T${time}`,
+                therapist: { id: therapistId },
+                user: { id: user.userId },
+                status: "PENDING",
+                notes: message
             });
             alert("Appointment booked successfully!");
         } catch (error) {

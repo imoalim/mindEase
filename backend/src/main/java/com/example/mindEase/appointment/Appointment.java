@@ -1,3 +1,4 @@
+// src/main/java/com/example/mindEase/appointment/Appointment.java
 package com.example.mindEase.appointment;
 
 import com.example.mindEase.user.User;
