@@ -80,7 +80,12 @@ public class AuthenticationService extends DefaultOAuth2UserService {
                     .map(userRole -> userRole.getRole().toString())
                     .toList();
 
+            String role = "USER";
+            if(user.get().getSelectedRole() != null) {
+                role = user.get().getSelectedRole().ToString();
+            }
+
             return accessTokenEncoder.encode(
-                    new AccessTokenImpl(user.get().getEmail(), userId, roles, user.get().getVerificationStep(), user.get().getVerified(), user.get().getSelectedRole().ToString()));
+                    new AccessTokenImpl(user.get().getEmail(), userId, roles, user.get().getVerificationStep(), user.get().getVerified(), role));
         }
 }
