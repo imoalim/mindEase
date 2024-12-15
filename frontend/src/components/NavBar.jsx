@@ -24,11 +24,21 @@ const NavBar = () => {
                 <Button color="inherit" component={Link} to="/therapy-services">Therapy Services</Button>
                 <Button color="inherit" component={Link} to="/self-assessment">Self-Assessment</Button>
                 <Button color="inherit" component={Link} to="/resources">Resources</Button>
-                {!isAuthenticated ?
-                    <Button color="inherit" component={Link} to="/Login">Authenticate</Button>
-                    :
-                    <Button color="inherit" onClick={onLogoutClick}>Logout</Button>
-                }
+                {isAuthenticated && (
+                    <>
+                        <Button color="inherit" component={Link} to="/profile">
+                            Profile
+                        </Button>
+                        <Button color="inherit" onClick={logout}>
+                            Logout
+                        </Button>
+                    </>
+                )}
+                {!isAuthenticated && (
+                    <Button color="inherit" component={Link} to="/login">
+                        Authenticate
+                    </Button>
+                )}
             </Toolbar>
         </AppBar>
     )
