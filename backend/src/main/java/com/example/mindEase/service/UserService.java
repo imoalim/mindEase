@@ -30,7 +30,7 @@ public class UserService {
 
 
     public List<User> findAllTherapists() {
-        return userRepository.findAllTherapists();
+        return userRepository.findAllBySelectedRoleAndVerified(Role.THERAPIST, true);
     }
     public boolean deleteUserById(Long id) {
         if (userRepository.existsById(id)) {

@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { TextField, Button, MenuItem, Select, InputLabel, FormControl, Box, Typography } from "@mui/material";
 import client from "@/axios/APIinitializer.jsx"; // Adjust the import path as necessary
-import { useAuth } from "@/services/AuthProvider.jsx"; // Import the useAuth hook to get user information
+import { useAuth } from "@/services/AuthProvider.jsx";
+import NavBar from "@/components/NavBar.jsx"; // Import the useAuth hook to get user information
 
 const BookAppointmentPage = () => {
     const [date, setDate] = useState("");
@@ -11,11 +13,12 @@ const BookAppointmentPage = () => {
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const { user } = useAuth(); // Get the authenticated user
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadTherapists = async () => {
             try {
-                const response = await client.get('/api/therapists');
+                const response = await client.get('/api/users/therapists');
                 setTherapists(response.data);
             } catch (error) {
                 setError(error.message);
@@ -36,6 +39,7 @@ const BookAppointmentPage = () => {
                 notes: message
             });
             alert("Appointment booked successfully!");
+            navigate("/appointment-page")
         } catch (error) {
             console.error("Error booking appointment:", error);
             alert("Failed to book appointment.");
@@ -43,7 +47,9 @@ const BookAppointmentPage = () => {
     };
 
     return (
-        <Box sx={{ maxWidth: 500, margin: "auto", padding: 2, boxShadow: 3, borderRadius: 2 }}>
+        <>
+            <NavBar/>
+        <Box sx={{ maxWidth: 500, margin:"auto", marginTop: 5, padding: 2, boxShadow: 3, borderRadius: 2, backgroundColor: "white" }}>
             <Typography variant="h4" gutterBottom>
                 Book an Appointment
             </Typography>
@@ -106,6 +112,7 @@ const BookAppointmentPage = () => {
             </form>
             {error && <Typography color="error">{error}</Typography>}
         </Box>
+        </>
     );
 };
 
