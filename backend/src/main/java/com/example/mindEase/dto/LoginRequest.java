@@ -1,18 +1,21 @@
 package com.example.mindEase.dto;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.mindEase.user.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 public class LoginRequest {
-    @NotNull
+    @Email
+    @NotBlank
     private String email;
-    @NotNull
+
+    @NotBlank
     private String password;
+
+    private Role role; // Rolle: USER, THERAPIST, PSYCHOLOGY_STUDENT
+
+    private String university; // Nur für Studenten
+    private String qualifications; // Zusätzliche Qualifikationen für Studenten/Therapists
 }

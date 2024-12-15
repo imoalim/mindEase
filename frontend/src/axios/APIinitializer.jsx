@@ -18,5 +18,17 @@ client.interceptors.response.use(
         return Promise.reject(error.response.data)
     },
 )
+// Add a request interceptor to dynamically attach the token
+client.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
 
 export default client
