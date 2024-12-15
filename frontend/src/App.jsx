@@ -16,6 +16,7 @@ import ResourcesPage from './pages/Resources.jsx';
 import CompleteProfilePage from "./pages/CompleteProfilePage.jsx";
 import AdminsPage from "@/pages/AdminsPage.jsx";
 import RoleRoute from "@/components/RoleRoute.jsx";
+import UsersPage from './pages/UsersPage.jsx';
 
 const App = () => {
   return (
@@ -43,6 +44,7 @@ const App = () => {
           <Route path="/questionnaire" element={<QuestionnairePage />} />
           <Route path="/suggestions" element={<RecommendationsPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/users" element={<UsersPage />} />
         </Routes>
       </Router>
     </AuthProvider>
