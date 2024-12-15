@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Box, TextField, Button, Typography, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import axios from 'axios';
 import client from '../axios/APIinitializer.jsx';
@@ -91,7 +91,10 @@ const EditProfile = ({ user, onCancel, onSave }) => {
         return dateString === date.toISOString().split('T')[0];
     };
     return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2, backgroundColor: "white",
+            padding: 3,
+            borderRadius: 2,
+            boxShadow: 1, }}>
             <Typography variant="h5" gutterBottom>
                 Edit Profile
             </Typography>
@@ -157,7 +160,7 @@ const EditProfile = ({ user, onCancel, onSave }) => {
                 <Button type="submit" variant="contained" color="primary" disabled={loading}>
                     {loading ? 'Saving...' : 'Save'}
                 </Button>
-                <Button variant="outlined" color="secondary" onClick={onCancel} sx={{ ml: 2 }}>
+                <Button variant="outlined" color="error" onClick={onCancel} sx={{ ml: 2 }}>
                     Cancel
                 </Button>
             </Box>

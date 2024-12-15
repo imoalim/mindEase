@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar.jsx";
 import { useAuth } from "../services/AuthProvider.jsx";
 import { useNavigate } from "react-router-dom";
 import client from "../axios/APIinitializer.jsx";
-import { Container, Typography, Box, Button } from "@mui/material";
+import {Container, Typography, Box, Button, Avatar} from "@mui/material";
 import EditProfile from "../components/EditProfile.jsx";
+import userIcon from "../assets/pictures/userIcon.png"
 
 const ProfilePage = () => {
     const { isAuthenticated } = useAuth();
@@ -49,28 +50,55 @@ const ProfilePage = () => {
     return (
         <>
             <NavBar />
-            <Container>
-                <Box sx={{ mt: 4 }}>
-                    <Typography variant="h4" gutterBottom>
-                        Profile
-                    </Typography>
+            <Container sx={{alignItems: "center", alignContent:"center",  display: "flex",
+                justifyContent: "center"}}>
+                <Box sx={{ mt: 4, alignContent:"center", alignItems:"center" }}>
                     {isEditing ? (
                         <EditProfile user={userData} onCancel={handleEditToggle} onSave={fetchUserData} />
                     ) : (
                         <>
                             {userData && (
-                                <Box>
-                                    <Typography variant="body1"><strong>Email:</strong> {userData.email}</Typography>
-                                    <Typography variant="body1"><strong>First Name:</strong> {userData.firstName}</Typography>
-                                    <Typography variant="body1"><strong>Last Name:</strong> {userData.lastName}</Typography>
-                                    <Typography variant="body1"><strong>Country:</strong> {userData.country}</Typography>
-                                    <Typography variant="body1"><strong>Birthday:</strong> {userData.birthday}</Typography>
-                                    <Typography variant="body1"><strong>Role:</strong> {userData.selectedRole}</Typography>
+                                <Box
+                                    sx={{
+                                        backgroundColor: "white",
+                                        padding: 3,
+                                        borderRadius: 2,
+                                        boxShadow: 1,
+                                        maxWidth: 500,
+                                        margin: "auto",
+                                        color: "#00a0e1",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    <Typography variant="h4" gutterBottom sx={{margin:2, paddingBottom: 1}}>
+                                        Welcome, {userData.firstName} {userData.lastName}!
+                                    </Typography>
+                                    <Avatar
+                                        src={userIcon}
+                                        sx={{ width: 110, height: 110, margin: "auto", mb: 2, paddingBottom: 1 }}
+                                    />
+                                    <Typography variant="h5" marginBottom={1.5}>
+                                       Profile details:
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                                        <strong>Email:</strong> {userData.email}
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                                        <strong>Country:</strong> {userData.country}
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                                        <strong>Birthday:</strong> {userData.birthday}
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                                        <strong>Role:</strong> {userData.selectedRole}
+                                    </Typography>
+                                    <Button variant="contained" color="primary" sx={{marginTop: 2, marginBottom: 1}} onClick={handleEditToggle}>
+                                        Edit Profile
+                                    </Button>
                                 </Box>
+
                             )}
-                            <Button variant="contained" color="primary" onClick={handleEditToggle}>
-                                Edit Profile
-                            </Button>
+
                         </>
                     )}
                 </Box>
