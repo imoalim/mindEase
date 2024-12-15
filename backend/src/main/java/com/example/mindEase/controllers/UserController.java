@@ -98,6 +98,19 @@ public class UserController {
         }
     }
 
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUserStatus(@PathVariable Long userId)
+    {
+        User response = userService.updateUserStatus(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/unverified")
+    public ResponseEntity<List<User>> getUnverifiedProfessionals(){
+        List<User> response = userService.getAllUnverifiedProfessionals();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
 
     @PostMapping("/questionnaire")
     public ResponseEntity<Long> saveQuestionnaire(@RequestBody UserQuestionnaireRequest request)

@@ -14,6 +14,7 @@ import QuestionnairePage from './pages/UserQuestionnairePage.jsx';
 import RecommendationsPage from './pages/RecommendationsPage.jsx';
 import ResourcesPage from './pages/Resources.jsx';
 import CompleteProfilePage from "./pages/CompleteProfilePage.jsx";
+import AdminsPage from "@/pages/AdminsPage.jsx";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route element={<PrivateRoutes />} >
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/appointments" element={<TherapistsAppointmentsPage/>}/>
+              <Route path="/admin/therapists-verification" element={<AdminsPage/>} />
           </Route>
           <Route path="/" element={<HomePage />} />
           <Route path="/therapy-services" element={<TherapyServices />} />
