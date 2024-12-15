@@ -4,6 +4,7 @@ import com.example.mindEase.config.security.token.AccessToken;
 import com.example.mindEase.config.security.token.AccessTokenDecoder;
 import com.example.mindEase.config.security.token.AccessTokenEncoder;
 import com.example.mindEase.config.security.token.exception.InvalidAccessTokenException;
+import com.example.mindEase.user.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.JwtException;
@@ -39,9 +40,10 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
         }
         if (accessToken.getEmail() != null) {
             claimsMap.put("userId", accessToken.getUserId());
+            claimsMap.put("verificationStep", accessToken.getVerificationStep());
             claimsMap.put("verified", accessToken.getVerified());
+            claimsMap.put("selectedRole", accessToken.getSelectedRole());
         }
-
 
         Instant now = Instant.now();
         return Jwts.builder()
@@ -62,9 +64,11 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
 
             List<String> roles = claims.get("roles", List.class);
             Long userId = claims.get("userId", Long.class);
+            Integer verificationStep = claims.get("verificationStep", Integer.class);
             Boolean verified = claims.get("verified", Boolean.class);
+            String selectedRole = claims.get("selectedRole", String.class);
 
-            return new AccessTokenImpl(claims.getSubject(), userId, roles, verified);
+            return new AccessTokenImpl(claims.getSubject(), userId, roles, verificationStep, verified, selectedRole);
         } catch (JwtException e) {
             throw new InvalidAccessTokenException(e.getMessage());
         }
