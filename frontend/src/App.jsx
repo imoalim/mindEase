@@ -8,6 +8,7 @@ import PrivateRoutes from "./components/PrivateRoutes.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import TherapistsAppointmentsPage from "@/pages/TherapistsAppointmentsPage.jsx";
+import BookAppointmentPage from "./pages/BookAppointmentPage.jsx";
 // import NavBar from './components/NavBar.jsx'
 
 import QuestionnairePage from './pages/UserQuestionnairePage.jsx';
@@ -25,7 +26,7 @@ const App = () => {
         <Routes>
           <Route element={<PrivateRoutes />} >
               <Route path="/profile" element={<ProfilePage />} />
-
+              <Route path="/book-appointments" element={<BookAppointmentPage />} />
               <Route element={<RoleRoute allowed_roles={["THERAPIST", "PSYCHOLOGY_STUDENT"]}/>}>
                   <Route path="/appointments" element={<TherapistsAppointmentsPage/>}/>
               </Route>

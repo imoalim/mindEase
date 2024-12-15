@@ -1,41 +1,40 @@
 import { useState, useEffect } from 'react';
-import {Typography, Button, Grid2, Card, CardContent, Paper, CardHeader} from '@mui/material';
+import { Typography, Button, Grid2, Card, CardContent, Paper, CardHeader } from '@mui/material';
 import '@/AppointmentApp.css'
 import client from "@/axios/APIinitializer.jsx";
 import NavBar from "@/components/NavBar.jsx";
-import {useAuth} from "@/services/AuthProvider.jsx";
-import {useNavigate} from "react-router-dom";
+import { useAuth } from "@/services/AuthProvider.jsx";
+import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 
 const AppointmentPage = () => {
     const [appointments, setAppointments] = useState([]);
     const { user, isAuthenticated } = useAuth();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [error, setError] = useState("");
 
-    if (!isAuthenticated) {
-        navigate('/login')
-    }
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/login'); // Redirect to login if not authenticated
+        } else if (user) {
+            getAppointments(); // Fetch appointments if the user is authenticated
+        }
+    }, [isAuthenticated, user, navigate]);
 
-    const getAppointments = async () =>{
-        try{
+    const getAppointments = async () => {
+        try {
             const response = await client.get(`/api/appointments/user/${user.userId}`);
             setAppointments(response.data);
-        } catch(error) {
-                console.error("There was an error fetching the appointments!", error);
-                setError("Error loading appointments.");
-            }
-    };
-
-    useEffect(() => {
-        if (user) {
-            getAppointments();
+        } catch (error) {
+            console.error("There was an error fetching the appointments!", error);
+            setError("Error loading appointments.");
         }
-    }, [user]);
+    };
 
     const handleBookAppointment = () => {
         console.log('Booking a new appointment...');
+        navigate("/book-appointments");
     };
 
     return (
@@ -46,13 +45,14 @@ const AppointmentPage = () => {
                     Your Appointments
                 </Typography>
 
-                <Typography variant="body1"  align="center">
+                <Typography variant="body1" align="center">
                     View your upcoming appointments or book a new one. Our therapists are here to assist you professionally and confidentially.
                 </Typography>
 
-                {error ?
-                    <h1>Error occurred while loading data</h1> :
-                    <Grid2 container spacing={5} >
+                {error ? (
+                    <h1>Error occurred while loading data</h1>
+                ) : (
+                    <Grid2 container spacing={5}>
                         {appointments && appointments.length > 0 ? (
                             appointments.map((appointment) => (
                                 <Grid2 item sm={6} md={4} key={appointment.id}>
@@ -65,23 +65,22 @@ const AppointmentPage = () => {
                                             }
                                             title={`Appointment #${appointment.id}`}
                                         />
-                                        <CardContent style={{ alignItems:'center', justifyContent: 'center'}}>
+                                        <CardContent style={{ alignItems: 'center', justifyContent: 'center' }}>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong> Date & time</strong>: {new Date(appointment.appointmentDateTime).toLocaleString()}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong> Status</strong>: {appointment.status}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary" >
+                                            <Typography variant="body2" color="text.secondary">
                                                 <strong>Notes</strong>: {appointment.notes}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
-                                                <strong>Patient</strong>: {appointment.user.firstName +" " + appointment.user.lastName}
+                                                <strong>Patient</strong>: {appointment.user.firstName + " " + appointment.user.lastName}
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid2>
-
                             ))
                         ) : (
                             <Grid2 xs={12}>
@@ -93,10 +92,9 @@ const AppointmentPage = () => {
                             </Grid2>
                         )}
                     </Grid2>
-                }
+                )}
 
-
-                <div className="book-appointment" style={{ marginTop: '30px', textAlign: 'center' }}>
+                <div className="book-appointments" style={{ marginTop: '30px', textAlign: 'center' }}>
                     <Button
                         variant="contained"
                         color="primary"
