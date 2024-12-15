@@ -15,6 +15,7 @@ import RecommendationsPage from './pages/RecommendationsPage.jsx';
 import ResourcesPage from './pages/Resources.jsx';
 import CompleteProfilePage from "./pages/CompleteProfilePage.jsx";
 import AdminsPage from "@/pages/AdminsPage.jsx";
+import RoleRoute from "@/components/RoleRoute.jsx";
 
 const App = () => {
   return (
@@ -23,9 +24,16 @@ const App = () => {
         <Routes>
           <Route element={<PrivateRoutes />} >
               <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/appointments" element={<TherapistsAppointmentsPage/>}/>
-              <Route path="/admin/therapists-verification" element={<AdminsPage/>} />
+
+              <Route element={<RoleRoute allowed_roles={["THERAPIST", "PSYCHOLOGY_STUDENT"]}/>}>
+                  <Route path="/appointments" element={<TherapistsAppointmentsPage/>}/>
+              </Route>
+
+              <Route element={<RoleRoute allowed_roles={["ADMIN"]}/>}>
+                  <Route path="/admin/therapists-verification" element={<AdminsPage/>} />
+              </Route>
           </Route>
+
           <Route path="/" element={<HomePage />} />
           <Route path="/therapy-services" element={<TherapyServices />} />
           <Route path="/register" element={<RegisterPage />} />
