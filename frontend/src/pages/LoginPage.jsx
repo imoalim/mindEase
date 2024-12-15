@@ -5,12 +5,13 @@ import loginImage from "@/assets/pictures/login.svg"
 import axios from "axios"
 import {useAuth} from "../services/AuthProvider.jsx"
 import {Link, useNavigate} from "react-router-dom"
+import client from "../axios/APIinitializer.jsx";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
-    const {login, isAuthenticated, isVerified} = useAuth()
+    const {login, isAuthenticated} = useAuth()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -29,25 +30,27 @@ const LoginPage = () => {
                     "Content-Type": "application/json",
                 }}
             );
-            // Token aus der Antwort speichern
-            const accessToken = response.data.accessToken;
-            console.log("access:"+accessToken);
-            if (accessToken) {
-                localStorage.setItem("token", accessToken);
-                login(accessToken); // Aktualisiere Auth-Status im Context
+            login(response.data.accessToken);
 
-                // Navigation nach dem Login
-                setTimeout(() => {
-                    navigate(!isVerified ? "/complete-profile" : "/");
-                }, 100);
-            }
+            setTimeout(async() => {
+                await client.get("api/users/me").then(response => {
+                    const user = response.data;
+
+                    if(user.verificationStep == 1) {
+                        navigate('/complete-profile')
+                    } else if(user.verificationStep == 2) {
+                        if (user.selectedRole !== 'USER') {
+                            navigate('/')
+                        } else {
+                            navigate('/questionnaire')
+                        }
+                    }
+                }).catch(
+                    (e) => setError("An error occurred")
+                )
+            }, 100)
         } catch (err) {
-            console.error("Error during login:", err);
-            setError(
-                err.response?.data?.errors?.[0]?.error === "INVALID_CREDENTIALS"
-                    ? "Invalid credentials"
-                    : "An error occurred"
-            );
+            setError(err.response.data.errors[0].error  === "INVALID_CREDENTIALS" ? "Invalid credentials" : "An error occurred");
         }
     };
 
