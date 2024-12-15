@@ -2,17 +2,23 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 const decodeJWT = (token) => {
     try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace('-', '+').replace('_', '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
+        if (!token) throw new Error("Token is null or undefined.");
+        const base64Url = token.split(".")[1];
+        if (!base64Url) throw new Error("Token structure is invalid.");
+        const base64 = base64Url.replace("-", "+").replace("_", "/");
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split("")
+                .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                .join("")
+        );
         return JSON.parse(jsonPayload);
     } catch (e) {
+        console.error("Failed to decode JWT:", e.message);
         return null;
     }
 };
+
 
 const isTokenExpired = (decodedToken) => {
     if (!decodedToken || !decodedToken.exp) return true;
@@ -37,6 +43,14 @@ export const AuthProvider = ({ children }) => {
     });
 
     useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+            const decoded = decodeJWT(storedToken);
+            if (!decoded || isTokenExpired(decoded)) {
+                localStorage.removeItem("token");
+                setUser(null);
+            }
+        }
         if (user) {
             localStorage.setItem("token", user.token);
         } else {
@@ -59,7 +73,8 @@ export const AuthProvider = ({ children }) => {
 
     const isAuthenticated = !!user;
 
-    const isVerified = user?.verified;
+    const isVerified = user?.verified || false;
+
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, isVerified, user, login, logout }}>

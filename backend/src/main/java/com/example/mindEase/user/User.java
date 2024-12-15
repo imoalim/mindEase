@@ -16,6 +16,7 @@ import java.util.Set;
 @Table(name = "users")
 @Data
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -64,5 +65,9 @@ public class User {
 //    private String verificationAnswers;
 //
 //    private String documentPath;
+private String university; // Für Psychology Students
+    private String qualifications; // Qualifikationen für spezifische Rollen
+    private String enrollmentDocumentPath;
+
 
 }
