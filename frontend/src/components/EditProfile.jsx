@@ -31,42 +31,42 @@ const EditProfile = ({ user, onCancel, onSave }) => {
             [name]: value,
         });
     };
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+    const handleFileChange = (event) => {
+        setFormData({
+            ...formData,
+            enrollmentDocument: event.target.files[0],
+        });
     };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!isValidDate(formData.birthday)) {
-            setBirthdayError('Invalid date format. Please use YYYY-MM-DD.');
-            return;
-        }
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         setLoading(true);
-        const data = {
-            email: formData.email,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            country: formData.country,
-            birthday: formData.birthday,
-            selectedRole: formData.selectedRole,
-        };
+
+        const formData = new FormData();
+        formData.append('name', formData.name);
+        formData.append('email', formData.email);
+        formData.append('birthday', formData.birthday);
+        if (formData.selectedRole === 'therapist' && formData.enrollmentDocument) {
+            formData.append('enrollmentDocument', formData.enrollmentDocument);
+        }
+
         try {
-            await client.put('/api/profile', data, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+            const response = await fetch('http://localhost:8080/api/profile', {
+                method: 'PUT',
+                body: formData,
             });
-            if (formData.selectedRole === 'therapist' && file) {
-                await uploadFile(file);
+
+            if (!response.ok) {
+                throw new Error(`Error updating user: ${response.statusText}`);
             }
-            onSave(); // Refresh the user data after successful update
-            onCancel(); // Close the edit form after successful update
+
+            // Handle success
         } catch (error) {
             console.error('Error updating user:', error);
-            setError(error.response?.data?.message || 'Failed to update user data.');
         } finally {
             setLoading(false);
         }
     };
+
     
     const uploadFile = async (file) => {
         const formData = new FormData();
