@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, MenuItem, Select, InputLabel, FormControl, Box, Typography } from "@mui/material";
-import { fetchTherapists } from "../axios/FetchTherapists.jsx"; // Adjust the import path as necessary
+import client from "@/axios/APIinitializer.jsx"; // Adjust the import path as necessary
 
 const BookAppointmentPage = () => {
     const [date, setDate] = useState("");
@@ -13,8 +13,8 @@ const BookAppointmentPage = () => {
     useEffect(() => {
         const loadTherapists = async () => {
             try {
-                const data = await fetchTherapists();
-                setTherapists(data);
+                const response = await client.get('/api/therapists');
+                setTherapists(response.data);
             } catch (error) {
                 setError(error.message);
             }
@@ -26,7 +26,7 @@ const BookAppointmentPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("/api/appointments", {
+            const response = await client.post("/api/appointments", {
                 date,
                 time,
                 therapistId,

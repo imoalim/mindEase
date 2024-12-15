@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchTherapists = async () => {
     try {
-        const response = await axios.get('/api/therapists', {
+        const response = await axios.get('http://localhost:8080/api/therapists', { // Adjust the URL to match your backend
             headers: {
                 'Accept': 'application/json'
             }

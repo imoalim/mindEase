@@ -106,4 +106,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @GetMapping("/therapists")
+    public ResponseEntity<List<User>> getAllTherapists() {
+        List<User> therapists = userService.findAllTherapists();
+        if (therapists.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(therapists, HttpStatus.OK);
+    }
+
+
 }

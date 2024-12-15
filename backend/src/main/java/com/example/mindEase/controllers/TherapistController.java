@@ -1,3 +1,4 @@
+// src/main/java/com/example/mindEase/controllers/TherapistController.java
 package com.example.mindEase.controllers;
 
 import com.example.mindEase.user.User;
@@ -17,7 +18,7 @@ public class TherapistController {
 
     private final UserService userService;
 
-    @GetMapping(value = "/therapists", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAllTherapists() {
         return userService.findAllTherapists();
     }
