@@ -81,6 +81,6 @@ public class AuthenticationService extends DefaultOAuth2UserService {
                     .toList();
 
             return accessTokenEncoder.encode(
-                    new AccessTokenImpl(user.get().getEmail(), userId, roles, user.get().getVerified()));
+                    new AccessTokenImpl(user.get().getEmail(), userId, roles, user.get().getVerificationStep(), user.get().getVerified(), user.get().getSelectedRole().ToString()));
         }
 }

@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import client from "../axios/APIinitializer.jsx";
 
 const CompleteProfilePage = () => {
-    const {isAuthenticated, isVerified} = useAuth()
+    const {isAuthenticated, isVerified, user} = useAuth()
     const navigate = useNavigate()
 
     const [success, setSuccess] = useState(false)
@@ -35,25 +35,21 @@ const CompleteProfilePage = () => {
                 .catch(error => console.error("Error fetching countries. Error:" + error))
         }
 
-        const fetchData = async () => {
-            await client.get('/api/users/me')
-                .then(response => {
-                    const user = response.data
-                    if (user.verificationStep == 2) {
-                        if (user.selectedRole == 'USER') {
-                            navigate('/questionnaire')
-                        } else {
-                            // navigate('/therapist')
-                        }
-                    } else if(user.verificationStep == 3) {
-                        navigate('/suggestions')
-                    }
-                    fetchCountries()
-                })
-                .catch(error => console.error("Error fetching user data. Error:" + error))
+        const checkVerificationStep =  () => {
+            console.log(user)
+            if(user.verificationStep == 1) {
+                navigate('/complete-profile')
+            } else if(user.verificationStep == 2) {
+                if (user.selectedRole !== 'USER') {
+                    navigate('/')
+                } else {
+                    navigate('/questionnaire')
+                }
+            }
+            fetchCountries()
         }
 
-        fetchData();
+        checkVerificationStep();
     }, []);
 
     const handleChange = (e) => {
