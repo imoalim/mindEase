@@ -1,20 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import HomePage from '@/pages/HomePage'
-import TherapyServices from '@/pages/TherapyServicesPage'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from '@/pages/HomePage';
+import TherapyServices from '@/pages/TherapyServicesPage';
 import AppointmentPage from "./pages/AppointmentPage.jsx";
-import {AuthProvider} from "./services/AuthProvider.jsx";
+import { AuthProvider } from "./services/AuthProvider.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import PrivateRoutes from "./components/PrivateRoutes.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import TherapistsAppointmentsPage from "@/pages/TherapistsAppointmentsPage.jsx";
-// import NavBar from './components/NavBar.jsx'
-
 import QuestionnairePage from './pages/UserQuestionnairePage.jsx';
 import RecommendationsPage from './pages/RecommendationsPage.jsx';
 import ResourcesPage from './pages/Resources.jsx';
 import CompleteProfilePage from "./pages/CompleteProfilePage.jsx";
 import AdminsPage from "@/pages/AdminsPage.jsx";
+import UsersPage from "@/pages/UsersPage.jsx";
 
 const App = () => {
   return (
@@ -23,8 +22,9 @@ const App = () => {
         <Routes>
           <Route element={<PrivateRoutes />} >
               <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/appointments" element={<TherapistsAppointmentsPage/>}/>
-              <Route path="/admin/therapists-verification" element={<AdminsPage/>} />
+              <Route path="/appointments" element={<TherapistsAppointmentsPage />} />
+              <Route path="/admin/therapists-verification" element={<AdminsPage />} />
+              <Route path="/users" element={<UsersPage />} />
           </Route>
           <Route path="/" element={<HomePage />} />
           <Route path="/therapy-services" element={<TherapyServices />} />
@@ -38,7 +38,7 @@ const App = () => {
         </Routes>
       </Router>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
