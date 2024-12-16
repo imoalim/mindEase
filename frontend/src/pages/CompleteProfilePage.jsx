@@ -84,9 +84,12 @@ const CompleteProfilePage = () => {
 
             setErrors({})
             if(formData.selectedRole === "USER") {
+                setSuccess("Profile completed successfully! Redirecting you to the questionnaire...")
                 setTimeout(() => navigate('/questionnaire'), 2000)
+            } else {
+                setSuccess("Profile completed successfully! Redirecting to the main page...")
+                setTimeout(() => navigate('/'), 2000)
             }
-            setSuccess("Profile completed successfully! Redirecting you to the questionnaire...")
         } catch (error) {
             if (error.errors) {
                 const fieldErrors = error.errors.reduce((acc, err) => {
