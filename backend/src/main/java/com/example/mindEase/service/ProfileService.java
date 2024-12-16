@@ -28,6 +28,11 @@ public class ProfileService {
         user.setSelectedRole(request.getSelectedRole());
         user.setUniversity(request.getUniversity());
         user.setQualifications(request.getQualifications());
+        user.setDescription(request.getDescription());
+        user.setLocation(request.getLocation());
+        user.setGender(request.getGender());
+        user.setExperienceYears(request.getExperienceYears());
+
         if (request.getEnrollmentDocument() != null && !request.getEnrollmentDocument().isEmpty()) {
             String filePath = saveFile(request.getEnrollmentDocument(), user.getId());
             user.setEnrollmentDocumentPath(filePath);

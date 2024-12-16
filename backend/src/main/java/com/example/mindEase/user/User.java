@@ -66,6 +66,18 @@ public class User {
     @Column(name = "enrollment_document_path")
     private String enrollmentDocumentPath;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "experience_years")
+    private Integer experienceYears;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Set<UserRoleEntity> userRoles;

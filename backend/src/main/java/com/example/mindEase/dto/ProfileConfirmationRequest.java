@@ -37,4 +37,9 @@ public class ProfileConfirmationRequest {
     private String qualifications;
     private MultipartFile enrollmentDocument;
 
+    private String description;
+    private String location;
+    private String gender;
+    private Integer experienceYears;
+
 }

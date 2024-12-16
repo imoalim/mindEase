@@ -2,6 +2,8 @@ import  { useState, useEffect } from 'react';
 import { Box, TextField, Button, Typography, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import axios from 'axios';
 import client from '../axios/APIinitializer.jsx';
+import PropTypes from 'prop-types';
+
 const EditProfile = ({ user, onCancel, onSave }) => {
     const [formData, setFormData] = useState({
         email: user.email,
@@ -10,6 +12,10 @@ const EditProfile = ({ user, onCancel, onSave }) => {
         country: user.country,
         birthday: user.birthday,
         selectedRole: user.selectedRole,
+        description: user.description || "",
+        location: user.location || "",
+        gender: user.gender || "",
+        experienceYears: user.experienceYears || "",
     });
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -48,6 +54,10 @@ const EditProfile = ({ user, onCancel, onSave }) => {
             country: formData.country,
             birthday: formData.birthday,
             selectedRole: formData.selectedRole,
+            description: formData.description,
+            location: formData.location,
+            gender: formData.gender,
+            experienceYears: formData.experienceYears
         };
         try {
             await client.put('/api/profile', data, {
@@ -148,6 +158,25 @@ const EditProfile = ({ user, onCancel, onSave }) => {
                 error={!!birthdayError}
                 helperText={birthdayError}
             />
+            <TextField label="Description" name="description" value={formData.description} onChange={handleChange} fullWidth margin="normal" />
+            <TextField label="Location" name="location" value={formData.location} onChange={handleChange} fullWidth margin="normal" />
+            <FormControl fullWidth margin="normal">
+                <InputLabel>Gender</InputLabel>
+                <Select name="gender" value={formData.gender} onChange={handleChange}>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                </Select>
+            </FormControl>
+            <TextField
+                label="Experience Years"
+                name="experienceYears"
+                type="number"
+                value={formData.experienceYears}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+            />
             {formData.selectedRole === 'therapist' && (
                 <input
                     type="file"
@@ -166,5 +195,21 @@ const EditProfile = ({ user, onCancel, onSave }) => {
             </Box>
         </Box>
     );
+};
+EditProfile.propTypes = {
+    user: PropTypes.shape({
+        email: PropTypes.string.isRequired,
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+        country: PropTypes.string,
+        birthday: PropTypes.string,
+        selectedRole: PropTypes.string,
+        description: PropTypes.string,
+        location: PropTypes.string,
+        gender: PropTypes.string,
+        experienceYears: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    }).isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
 };
 export default EditProfile;
