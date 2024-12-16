@@ -30,7 +30,7 @@ export default function AdminsPage() {
         <>
             <NavBar/>
             <Container sx={{backgroundColor: "white", display: "flex", margin:10, alignItems:"center", width:"90%"}}>
-                <Grid2  spacing={5} padding={2} width={"100%"} alignItems={"center"} sx={{padding: 4}}>
+                <Grid2 padding={2} width={"100%"} alignItems={"center"} sx={{padding: 4}}>
                     <Typography variant="h4"  sx={{marginBottom: 4, color: "#00a0e1"}}>
                         <strong> New requests ({unverifiedProfessionals.filter(user => user).length}) </strong>
                     </Typography>

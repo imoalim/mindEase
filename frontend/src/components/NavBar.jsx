@@ -20,7 +20,11 @@ const NavBar = () => {
                     <a href="/" style={{color: 'inherit', textDecoration: 'inherit'}}>MindEase</a>
                 </Typography>
 
+
                 <Button color="inherit" component={Link} to="/">Home</Button>
+                <Button color="inherit" component={Link} to="/therapists">
+                    Professionals
+                </Button>
 
                 {user && user.roles.includes("ADMIN") &&
                     <Button color="inherit" component={Link} to="/admin/therapists-verification">Verification</Button>

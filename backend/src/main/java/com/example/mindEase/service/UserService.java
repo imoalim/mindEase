@@ -62,6 +62,13 @@ public class UserService {
         return unverifiedProfessionals;
     }
 
+    public List<User> getAllVerifiedProfessionals(){
+        List<User> verifiedProfessionals = userRepository.findAllBySelectedRoleAndVerified(Role.THERAPIST, true);
+        verifiedProfessionals.addAll( userRepository.findAllBySelectedRoleAndVerified(Role.PSYCHOLOGY_STUDENT, true));
+
+        return verifiedProfessionals;
+    }
+
     public Long saveUserEmotionalStateQuestionnaire(UserQuestionnaireRequest request){
         User user = this.findUserById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found for ID: " + request.getUserId()));
