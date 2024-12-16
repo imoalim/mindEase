@@ -22,7 +22,7 @@ const NavBar = () => {
 
                 <Button color="inherit" component={Link} to="/">Home</Button>
 
-                {user && user.roles.find(role => role==="ADMIN") &&
+                {user && user.roles.includes("ADMIN") &&
                     <Button color="inherit" component={Link} to="/admin/therapists-verification">Verification</Button>
                 }
 
@@ -30,7 +30,7 @@ const NavBar = () => {
                     <Button color="inherit" component={Link} to="/appointments">Appointments</Button>
                 }
 
-                {user && user.roles.find(role => role==="USER") &&
+                {user && user.roles.includes("USER") &&
                     <>
                         <Button color="inherit" component={Link} to="/appointment-page">
                             Therapy Services
@@ -47,7 +47,7 @@ const NavBar = () => {
                         <Button color="inherit" component={Link} to="/profile">
                             Profile
                         </Button>
-                        <Button color="inherit" onClick={logout}>
+                        <Button color="inherit" onClick={onLogoutClick}>
                             Logout
                         </Button>
                     </>
