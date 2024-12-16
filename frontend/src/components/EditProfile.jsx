@@ -16,6 +16,9 @@ const EditProfile = ({ user, onCancel, onSave }) => {
         location: user.location || "",
         gender: user.gender || "",
         experienceYears: user.experienceYears || "",
+        university: user.university || "",
+        qualifications: user.qualifications,
+        //profile_picture: user.profile_picture || ""
     });
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -57,12 +60,15 @@ const EditProfile = ({ user, onCancel, onSave }) => {
             description: formData.description,
             location: formData.location,
             gender: formData.gender,
-            experienceYears: formData.experienceYears
+            experienceYears: formData.experienceYears,
+            university: formData.university,
+            qualifications: formData.qualifications,
+            //profile_picture: formData.profile_picture
         };
         try {
             await client.put('/api/profile', data, {
                 headers: {
-                    'Content-Type': 'application/json',
+                   'Content-Type': 'multipart/form-data',
                 },
             });
             if (formData.selectedRole === 'therapist' && file) {
@@ -101,10 +107,12 @@ const EditProfile = ({ user, onCancel, onSave }) => {
         return dateString === date.toISOString().split('T')[0];
     };
     return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2, backgroundColor: "white",
+        <Box component="form" onSubmit={handleSubmit} sx={{
+            mt: 2, backgroundColor: "white",
             padding: 3,
             borderRadius: 2,
-            boxShadow: 1, }}>
+            boxShadow: 1,
+        }}>
             <Typography variant="h5" gutterBottom>
                 Edit Profile
             </Typography>
@@ -134,6 +142,22 @@ const EditProfile = ({ user, onCancel, onSave }) => {
                 fullWidth
                 margin="normal"
             />
+            <TextField
+                label="University"
+                name="university"
+                value={formData.university}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+            />
+            <TextField
+                label="Qualifications"
+                name="qualifications"
+                value={formData.qualifications}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+            />
             <FormControl fullWidth margin="normal">
                 <InputLabel>Country</InputLabel>
                 <Select
@@ -158,8 +182,10 @@ const EditProfile = ({ user, onCancel, onSave }) => {
                 error={!!birthdayError}
                 helperText={birthdayError}
             />
-            <TextField label="Description" name="description" value={formData.description} onChange={handleChange} fullWidth margin="normal" />
-            <TextField label="Location" name="location" value={formData.location} onChange={handleChange} fullWidth margin="normal" />
+            <TextField label="Description" name="description" value={formData.description} onChange={handleChange}
+                       fullWidth margin="normal"/>
+            <TextField label="Location" name="location" value={formData.location} onChange={handleChange} fullWidth
+                       margin="normal"/>
             <FormControl fullWidth margin="normal">
                 <InputLabel>Gender</InputLabel>
                 <Select name="gender" value={formData.gender} onChange={handleChange}>
@@ -177,19 +203,25 @@ const EditProfile = ({ user, onCancel, onSave }) => {
                 fullWidth
                 margin="normal"
             />
+            {/*<input
+                type="file"
+                name="profile_picture"
+                onChange={handleFileChange}
+                style={{marginTop: '16px'}}
+            /> */}
             {formData.selectedRole === 'therapist' && (
                 <input
                     type="file"
                     name="enrollmentDocument"
                     onChange={handleFileChange}
-                    style={{ marginTop: '16px' }}
+                    style={{marginTop: '16px'}}
                 />
             )}
-            <Box sx={{ mt: 2 }}>
+            <Box sx={{mt: 2}}>
                 <Button type="submit" variant="contained" color="primary" disabled={loading}>
                     {loading ? 'Saving...' : 'Save'}
                 </Button>
-                <Button variant="outlined" color="error" onClick={onCancel} sx={{ ml: 2 }}>
+                <Button variant="outlined" color="error" onClick={onCancel} sx={{ml: 2}}>
                     Cancel
                 </Button>
             </Box>
@@ -207,6 +239,9 @@ EditProfile.propTypes = {
         description: PropTypes.string,
         location: PropTypes.string,
         gender: PropTypes.string,
+        qualifications: PropTypes.string,
+        university: PropTypes.string,
+        //profile_picture:PropTypes.string,
         experienceYears: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }).isRequired,
     onCancel: PropTypes.func.isRequired,

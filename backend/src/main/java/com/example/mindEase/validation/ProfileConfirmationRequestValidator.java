@@ -26,13 +26,13 @@ public class ProfileConfirmationRequestValidator implements ConstraintValidator<
                 return false;
             }
 
-            if (request.getEnrollmentDocument() == null) {
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate("Enrollment document must not be null for this role")
-                        .addPropertyNode("enrollmentDocument")
-                        .addConstraintViolation();
-                return false;
-            }
+//            if (request.getEnrollmentDocument() == null) {
+//                context.disableDefaultConstraintViolation();
+//                context.buildConstraintViolationWithTemplate("Enrollment document must not be null for this role")
+//                        .addPropertyNode("enrollmentDocument")
+//                        .addConstraintViolation();
+//                return false;
+//            }
 
         }
         return true;

@@ -41,5 +41,6 @@ public class ProfileConfirmationRequest {
     private String location;
     private String gender;
     private Integer experienceYears;
+    //private String profile_picture;
 
 }

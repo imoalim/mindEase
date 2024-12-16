@@ -81,6 +81,10 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Set<UserRoleEntity> userRoles;
+
+    //@Column(name = "profile_picture")
+    //private String profile_picture;
+
 //
 //    @Lob
 //    private String verificationAnswers;

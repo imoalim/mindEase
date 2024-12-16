@@ -32,6 +32,7 @@ public class ProfileService {
         user.setLocation(request.getLocation());
         user.setGender(request.getGender());
         user.setExperienceYears(request.getExperienceYears());
+        //user.setProfile_picture(request.getProfile_picture());
 
         if (request.getEnrollmentDocument() != null && !request.getEnrollmentDocument().isEmpty()) {
             String filePath = saveFile(request.getEnrollmentDocument(), user.getId());
