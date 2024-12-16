@@ -35,6 +35,16 @@ public class UserService {
     public List<User> findAllTherapists() {
         return userRepository.findAllBySelectedRoleAndVerified(Role.THERAPIST, true);
     }
+
+    public Optional<User> findTherapistById(Long id) {
+        Optional<User> therapist = userRepository.findById(id);
+        if (therapist.isPresent() && therapist.get().getUserRoles().stream()
+                .anyMatch(role -> role.getRole().equals(Role.THERAPIST))) {
+            return therapist;
+        }
+        return Optional.empty();
+    }
+
     public boolean deleteUserById(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);

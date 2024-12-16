@@ -38,6 +38,7 @@ public class WebSecurityConfig {
                         registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth/**", "/tokens").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/therapists").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/therapists/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(configure -> configure.authenticationEntryPoint(authenticationEntryPoint))

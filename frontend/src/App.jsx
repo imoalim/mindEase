@@ -19,6 +19,7 @@ import AdminsPage from "@/pages/AdminsPage.jsx";
 import RoleRoute from "@/components/RoleRoute.jsx";
 import UsersPage from './pages/UsersPage.jsx';
 import DisplayProfessionalsPage from "@/pages/DisplayProfessionalsPage.jsx";
+import TherapistProfile from "./pages/TherapistProfile.jsx";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
           </Route>
 
           <Route path="/therapists" element={<DisplayProfessionalsPage/>} />
+          <Route path="/therapist/:id" element={<TherapistProfile/>} />
           <Route path="/" element={<HomePage />} />
           <Route path="/therapy-services" element={<TherapyServices />} />
           <Route path="/register" element={<RegisterPage />} />
