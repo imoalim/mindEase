@@ -26,9 +26,12 @@ const NavBar = () => {
                     Professionals
                 </Button>
 
-                {user && user.roles.includes("ADMIN") &&
-                    <Button color="inherit" component={Link} to="/admin/therapists-verification">Verification</Button>
-                }
+                {user && user.roles.includes("ADMIN") &&(
+                    <>
+                        <Button color="inherit" component={Link} to="/admin/therapists-verification">Verification</Button>
+                        <Button color="inherit" component={Link} to="/admin/users">Users</Button>
+                    </>
+                )}
 
                 {user && user.roles.find(role => role==="THERAPIST" || role === "PSYCHOLOGY_STUDENT") &&
                     <Button color="inherit" component={Link} to="/appointments">Appointments</Button>

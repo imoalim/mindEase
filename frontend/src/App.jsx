@@ -35,6 +35,7 @@ const App = () => {
 
               <Route element={<RoleRoute allowed_roles={["ADMIN"]}/>}>
                   <Route path="/admin/therapists-verification" element={<AdminsPage/>} />
+                  <Route path="/admin/users" element={<UsersPage />} />
               </Route>
           </Route>
 
@@ -49,7 +50,6 @@ const App = () => {
           <Route path="/questionnaire" element={<QuestionnairePage />} />
           <Route path="/suggestions" element={<RecommendationsPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
-          <Route path="/users" element={<UsersPage />} />
         </Routes>
       </Router>
     </AuthProvider>
