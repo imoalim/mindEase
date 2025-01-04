@@ -1,117 +1,118 @@
-import  { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, MenuItem, Select, InputLabel, FormControl, Box, Typography } from "@mui/material";
-import client from "@/axios/APIinitializer.jsx"; // Adjust the import path as necessary
-import { useAuth } from "@/services/AuthProvider.jsx";
-import NavBar from "@/components/NavBar.jsx"; // Import the useAuth hook to get user information
+import { useState, useEffect } from "react";
+import { Select, MenuItem, Button, Typography, Box, FormControl, InputLabel } from "@mui/material";
+import client from "@/axios/APIinitializer.jsx"; // Axios-Client importieren
+import NavBar from "@/components/NavBar.jsx";
 
 const BookAppointmentPage = () => {
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
     const [therapistId, setTherapistId] = useState("");
     const [therapists, setTherapists] = useState([]);
-    const [message, setMessage] = useState("");
+    const [timeSlots, setTimeSlots] = useState([]); // State für verfügbare Termine
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
     const [error, setError] = useState("");
-    const { user } = useAuth(); // Get the authenticated user
-    const navigate = useNavigate();
 
+    // Lade alle Therapeuten beim Laden der Seite
     useEffect(() => {
         const loadTherapists = async () => {
             try {
-                const response = await client.get('/api/users/therapists');
+                const response = await client.get("/api/therapists");
                 setTherapists(response.data);
             } catch (error) {
-                setError(error.message);
+                console.error("Error loading therapists:", error);
+                setError("Failed to load therapists.");
             }
         };
-
         loadTherapists();
     }, []);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    // Lade Zeitslots für den ausgewählten Therapeuten
+    const loadTimeSlots = async (id) => {
+        setTherapistId(id);
+        setTimeSlots([]); // Reset time slots bei Auswahländerung
+        setError(""); // Reset error state
         try {
+            console.log("Fetching time slots for therapist:", id);
+            const response = await client.get(`/api/schedule/therapist/${id}/available`);
+            setTimeSlots(response.data);
+        } catch (error) {
+            console.error("Error loading time slots:", error.response || error.message);
+            setError("Failed to load time slots. Please try again.");
+        }
+    };
+
+    const handleSubmit = async () => {
+        if (!selectedTimeSlot) return alert("Please select a time slot!");
+        try {
+            // Hier kannst du die Buchung an die API senden
             const response = await client.post("/api/appointments", {
-                appointmentDateTime: `${date}T${time}`,
-                therapist: { id: therapistId },
-                user: { id: user.userId },
-                status: "PENDING",
-                notes: message
+                therapistId,
+                timeSlotId: selectedTimeSlot,
             });
             alert("Appointment booked successfully!");
-            navigate("/appointment-page")
+            console.log("Response:", response.data);
         } catch (error) {
-            console.error("Error booking appointment:", error);
-            alert("Failed to book appointment.");
+            console.error("Error booking appointment:", error.response || error.message);
+            alert("Failed to book the appointment. Please try again.");
         }
     };
 
     return (
         <>
-            <NavBar/>
-        <Box sx={{ maxWidth: 500, margin:"auto", marginTop: 5, padding: 2, boxShadow: 3, borderRadius: 2, backgroundColor: "white" }}>
-            <Typography variant="h4" gutterBottom>
-                Book an Appointment
-            </Typography>
-            <form onSubmit={handleSubmit}>
+            <NavBar />
+            <Box sx={{ maxWidth: 500, margin: "auto", padding: 3 }}>
+                <Typography variant="h4">Book an Appointment</Typography>
+
+                {/* Therapist Auswahl */}
                 <FormControl fullWidth margin="normal">
                     <InputLabel id="therapist-select-label">Select Therapist</InputLabel>
                     <Select
                         labelId="therapist-select-label"
                         value={therapistId}
-                        onChange={(e) => setTherapistId(e.target.value)}
-                        required
+                        onChange={(e) => loadTimeSlots(e.target.value)}
                     >
-                        {therapists && therapists.length > 0 ? (
-                            therapists.map((therapist) => (
-                                <MenuItem key={therapist.id} value={therapist.id}>
-                                    {therapist.firstName} {therapist.lastName}
-                                </MenuItem>
-                            ))
-                        ) : (
-                            <MenuItem disabled>No therapists available</MenuItem>
-                        )}
+                        {therapists.map((therapist) => (
+                            <MenuItem key={therapist.id} value={therapist.id}>
+                                {therapist.firstName} {therapist.lastName}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
 
-                <TextField
-                    fullWidth
-                    type="date"
-                    label="Appointment Date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    InputLabelProps={{ shrink: true }}
-                    margin="normal"
-                    required
-                />
+                {/* Zeitslots Auswahl */}
+                {timeSlots.length > 0 && (
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel id="time-slot-label">Available Time Slots</InputLabel>
+                        <Select
+                            labelId="time-slot-label"
+                            value={selectedTimeSlot}
+                            onChange={(e) => setSelectedTimeSlot(e.target.value)}
+                        >
+                            {timeSlots.map((slot) => (
+                                <MenuItem key={slot.id} value={slot.id}>
+                                    {`${slot.date} - ${slot.startTime} to ${slot.endTime}`}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                )}
 
-                <TextField
+                {/* Buchungs-Button */}
+                <Button
+                    variant="contained"
+                    color="primary"
                     fullWidth
-                    type="time"
-                    label="Appointment Time"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    InputLabelProps={{ shrink: true }}
-                    margin="normal"
-                    required
-                />
-
-                <TextField
-                    fullWidth
-                    label="Message (Optional)"
-                    multiline
-                    rows={4}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    margin="normal"
-                />
-
-                <Button variant="contained" color="primary" type="submit" fullWidth>
+                    onClick={handleSubmit}
+                    disabled={!selectedTimeSlot}
+                >
                     Book Appointment
                 </Button>
-            </form>
-            {error && <Typography color="error">{error}</Typography>}
-        </Box>
+
+                {/* Fehleranzeige */}
+                {error && (
+                    <Typography color="error" sx={{ mt: 2 }}>
+                        {error}
+                    </Typography>
+                )}
+            </Box>
         </>
     );
 };
