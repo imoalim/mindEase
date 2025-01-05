@@ -1,15 +1,18 @@
 import  { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TextField, Button, MenuItem, Select, InputLabel, FormControl, Box, Typography } from "@mui/material";
 import client from "@/axios/APIinitializer.jsx"; // Adjust the import path as necessary
 import { useAuth } from "@/services/AuthProvider.jsx";
 import NavBar from "@/components/NavBar.jsx"; // Import the useAuth hook to get user information
 
 const BookAppointmentPage = () => {
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
+    const [date, setDate] = useState(null);
+    const [time, setTime] = useState(null);
     const [therapistId, setTherapistId] = useState("");
     const [therapists, setTherapists] = useState([]);
+    const [unavailableHours, setUnavailableHours] = useState([]);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const { user } = useAuth(); // Get the authenticated user
@@ -46,12 +49,40 @@ const BookAppointmentPage = () => {
         }
     };
 
+    const handleDateChange = async (e) => {
+        const selectedDate = e.target.value;
+        setDate(selectedDate);
+
+        // Fetch the booked appointments for the selected therapist and date
+        try {
+            const response = await client.get(`/api/appointments/therapist-unavailable`, {
+                params: { dateToCheck: selectedDate, therapistId }
+            });
+            console.log(response.data);
+            // Extract the hour from each LocalDateTime string in response.data
+            const hours = response.data.map((dateTime) => {
+                // Convert the string to a Date object
+                const dateObj = new Date(dateTime);
+
+                // Return the hour part (0-23 format)
+                return dateObj.getHours();
+            });
+
+            setUnavailableHours(hours); // Update state with the unavailable hours
+        } catch (error) {
+            setError("Error fetching unavailable hours");
+        }
+    };
+
     return (
         <>
             <NavBar/>
         <Box sx={{ maxWidth: 500, margin:"auto", marginTop: 5, padding: 2, boxShadow: 3, borderRadius: 2, backgroundColor: "white" }}>
             <Typography variant="h4" gutterBottom>
                 Book an Appointment
+            </Typography>
+            <Typography variant="subtitle2" gutterBottom>
+              All appointments duration is of 1 hour.
             </Typography>
             <form onSubmit={handleSubmit}>
                 <FormControl fullWidth margin="normal">
@@ -79,22 +110,42 @@ const BookAppointmentPage = () => {
                     type="date"
                     label="Appointment Date"
                     value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    onChange={handleDateChange}
                     InputLabelProps={{ shrink: true }}
                     margin="normal"
                     required
                 />
 
-                <TextField
-                    fullWidth
-                    type="time"
-                    label="Appointment Time"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    InputLabelProps={{ shrink: true }}
-                    margin="normal"
-                    required
-                />
+
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <TimePicker
+                        label="Appointment Time"
+                        value={time}
+                        onChange={(newValue) => {
+                            if (newValue) {
+                                const hour = newValue.getHours(); // Get the hour (24-hour format)
+                                const minutes = newValue.getMinutes(); // Get the minutes
+
+                                // Format the time as a string (e.g., "09:00")
+                                const formattedTime = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+                                setTime(formattedTime); // Set the time string
+                            }
+                        }}
+                        minTime={new Date(0, 0, 0, 9, 0)} // 9:00 AM
+                        maxTime={new Date(0, 0, 0, 17, 0)} // 5:00 PM
+                        minutesStep={30} // Only 00 or 30 minutes
+                        ampm={false} // Disable AM/PM and use 24-hour format
+                        views={['hours']} // Only show hours
+                        shouldDisableTime={(timeValue) => {
+                            const hour = timeValue.getHours();
+                            // Disable hours that are already booked
+                            return unavailableHours.includes(hour);
+                        }}
+                        renderInput={(params) => <TextField fullWidth margin="normal" required {...params} />}
+                    />
+                </LocalizationProvider>
+
 
                 <TextField
                     fullWidth

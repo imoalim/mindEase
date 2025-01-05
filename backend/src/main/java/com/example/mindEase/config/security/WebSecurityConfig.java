@@ -39,6 +39,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/auth/**", "/tokens").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/therapists").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/therapists/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/appointments/therapist-unavailable").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(configure -> configure.authenticationEntryPoint(authenticationEntryPoint))
