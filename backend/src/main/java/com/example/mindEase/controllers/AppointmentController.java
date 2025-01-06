@@ -63,5 +63,4 @@ public class AppointmentController {
         UnavailableTimeslotsRequest request = new UnavailableTimeslotsRequest(dateToCheck, therapistId);
         return appointmentService.getUnavailableHoursForTherapist(request);
     }
-    //test
 }
