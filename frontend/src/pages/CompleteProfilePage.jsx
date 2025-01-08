@@ -170,9 +170,14 @@ const CompleteProfilePage = () => {
                             label="Birthday"
                             name="birthday"
                             type="date"
-                            value={formData.birthday}
+                            value={formData.birthday || ''}
                             onChange={handleChange}
                             variant="outlined"
+                            slotProps={{
+                                inputLabel: {
+                                    shrink: true,
+                                },
+                            }}
                             required
                         />
                         {errors.birthday && (

@@ -175,12 +175,18 @@ const EditProfile = ({ user, onCancel, onSave }) => {
             <TextField
                 label="Birthday"
                 name="birthday"
+                type="date"
                 value={formData.birthday}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
                 error={!!birthdayError}
                 helperText={birthdayError}
+                slotProps={{
+                    inputLabel: {
+                        shrink: true,
+                    },
+                }}
             />
             <TextField label="Description" name="description" value={formData.description} onChange={handleChange}
                        fullWidth margin="normal"/>

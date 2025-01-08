@@ -44,6 +44,8 @@ const LoginPage = () => {
                         } else {
                             navigate('/questionnaire')
                         }
+                    } else {
+                        navigate('/')
                     }
                 }).catch(
                     (e) => setError("An error occurred")
