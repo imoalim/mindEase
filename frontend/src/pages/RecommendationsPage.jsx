@@ -65,7 +65,7 @@ function RecommendationsPage() {
   the first number represents the number of the question from the questionnaire and the other one is the number picked from the range.`;
 
 
-    const genAI = new GoogleGenerativeAI("AIzaSyCceAjfzLAeFp4u8ixO24bub89nQhbIXcs");
+    const genAI = new GoogleGenerativeAI("AIzaSyCPqm-AhCLzpAme6MkA6SiCj4fJZglLOxI");
     
 
     const fetchResponse = async () => {
