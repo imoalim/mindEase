@@ -1,34 +1,37 @@
+// src/main/java/com/example/mindEase/controllers/AppointmentController.java
 package com.example.mindEase.controllers;
 
 import com.example.mindEase.appointment.Appointment;
+import com.example.mindEase.dto.UnavailableTimeslotsRequest;
 import com.example.mindEase.service.AppointmentService;
 import com.example.mindEase.user.User;
+import jakarta.annotation.security.RolesAllowed;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/appointments")
+@AllArgsConstructor
 public class AppointmentController {
 
-    @Autowired
-    private AppointmentService appointmentService;
+    private final AppointmentService appointmentService;
 
     @GetMapping
-    public List<Appointment> getAppointments(@AuthenticationPrincipal OAuth2User principal) {
+    public List<Appointment> getAppointments() {
         return appointmentService.getAppointmentsByUser(1L);
     }
 
-    // Einen neuen Termin erstellen
     @PostMapping
-    public Appointment createAppointment(@RequestBody Appointment appointment) {
-        return appointmentService.saveAppointment(appointment);
+    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
+        Appointment savedAppointment = appointmentService.saveAppointment(appointment);
+        return ResponseEntity.ok(savedAppointment);
     }
 
-    // Alle Termine eines Benutzers abrufen
     @GetMapping("/user/{userId}")
     public List<Appointment> getAppointmentsByUser(@PathVariable Long userId) {
         return appointmentService.getAppointmentsByUser(userId);
@@ -39,16 +42,25 @@ public class AppointmentController {
         return appointmentService.getAppointmentsByTherapist(therapistId);
     }
 
-
-    // Termin nach ID abrufen
     @GetMapping("/{id}")
     public Appointment getAppointmentById(@PathVariable Long id) {
         return appointmentService.getAppointmentById(id).orElse(null);
     }
 
-    // Termin löschen
     @DeleteMapping("/{id}")
     public void deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Appointment> updateAppointment(@RequestBody Appointment appointment) {
+        Appointment updatedAppointment = appointmentService.updateAppointment(appointment);
+        return ResponseEntity.ok(updatedAppointment);
+    }
+
+    @GetMapping("/therapist-unavailable")
+    public List<LocalDateTime> getUnavailableHoursForTherapist(@RequestParam String dateToCheck, @RequestParam Long therapistId) {
+        UnavailableTimeslotsRequest request = new UnavailableTimeslotsRequest(dateToCheck, therapistId);
+        return appointmentService.getUnavailableHoursForTherapist(request);
     }
 }

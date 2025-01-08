@@ -47,27 +47,27 @@ public class AuthenticationService extends DefaultOAuth2UserService {
                 throw new UserAlreadyExistsException();
             }
 
-            User tempUser = User.builder().email(request.getEmail()).password(request.getPassword()).verified(false).build();
+            User tempUser = User.builder().email(request.getEmail()).password(request.getPassword()).build();
 
             saveNewUser(tempUser);
         }
 
-        private User saveNewUser(@RequestBody User request) {
+        private void saveNewUser(@RequestBody User request) {
             String encodedPassword = passwordEncoder.encode(request.getPassword());
 
             User newUser = User.builder()
-                    .email(request.getEmail())
-                    .password(encodedPassword)
-                    .verified(false)
-                    .build();
+                .email(request.getEmail())
+                .password(encodedPassword)
+                .verified(false)
+                .build();
 
             newUser.setUserRoles(Set.of(
-                    UserRoleEntity.builder()
-                            .user(newUser)
-                            .role(Role.USER)
-                            .build()));
+                UserRoleEntity.builder()
+                    .user(newUser)
+                    .role(Role.USER)
+                    .build()));
 
-            return userRepository.save(newUser);
+            userRepository.save(newUser);
         }
 
         private boolean matchesPassword(String rawPassword, String encodedPassword) {
@@ -80,7 +80,12 @@ public class AuthenticationService extends DefaultOAuth2UserService {
                     .map(userRole -> userRole.getRole().toString())
                     .toList();
 
+            String role = "USER";
+            if(user.get().getSelectedRole() != null) {
+                role = user.get().getSelectedRole().ToString();
+            }
+
             return accessTokenEncoder.encode(
-                    new AccessTokenImpl(user.get().getEmail(), userId, roles, user.get().getVerified()));
+                    new AccessTokenImpl(user.get().getEmail(), userId, roles, user.get().getVerificationStep(), user.get().getVerified(), role));
         }
 }

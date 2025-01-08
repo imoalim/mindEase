@@ -1,10 +1,17 @@
 import { AppBar, Toolbar, Typography, Button } from '@mui/material'
-import { Link } from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import logo from '@/assets/pictures/logo.png'
 import {useAuth} from "../services/AuthProvider.jsx";
 
 const NavBar = () => {
-    const {isAuthenticated, logout} = useAuth();
+    const {isAuthenticated, logout, user} = useAuth()
+    const navigate = useNavigate()
+
+    const onLogoutClick = () => {
+        logout();
+        navigate('/')
+    }
+
     return (
         <AppBar position="static" style={{ backgroundColor: '#87CEEB' }}>
             <Toolbar>
@@ -13,15 +20,50 @@ const NavBar = () => {
                     <a href="/" style={{color: 'inherit', textDecoration: 'inherit'}}>MindEase</a>
                 </Typography>
 
+
                 <Button color="inherit" component={Link} to="/">Home</Button>
-                <Button color="inherit" component={Link} to="/therapy-services">Therapy Services</Button>
-                <Button color="inherit" component={Link} to="/self-assessment">Self-Assessment</Button>
-                <Button color="inherit" component={Link} to="/resources">Resources</Button>
-                {!isAuthenticated ?
-                    <Button color="inherit" component={Link} to="/Login">Authenticate</Button>
-                    :
-                    <Button color="inherit" onClick={logout}>Logout</Button>
+                <Button color="inherit" component={Link} to="/therapists">
+                    Professionals
+                </Button>
+
+                {user && user.roles.includes("ADMIN") &&(
+                    <>
+                        <Button color="inherit" component={Link} to="/admin/therapists-verification">Verification</Button>
+                        <Button color="inherit" component={Link} to="/admin/users">Users</Button>
+                    </>
+                )}
+
+                {user && user.roles.find(role => role==="THERAPIST" || role === "PSYCHOLOGY_STUDENT") &&
+                    <Button color="inherit" component={Link} to="/appointments">Appointments</Button>
                 }
+
+                {user && user.roles.includes("USER") &&
+                    <>
+                        <Button color="inherit" component={Link} to="/appointment-page">
+                            Therapy Services
+                        </Button>
+                        <Button color="inherit" component={Link} to="/resources">
+                            Resources
+                        </Button>
+                    </>
+                }
+
+
+                {isAuthenticated && (
+                    <>
+                        <Button color="inherit" component={Link} to="/profile">
+                            Profile
+                        </Button>
+                        <Button color="inherit" onClick={onLogoutClick}>
+                            Logout
+                        </Button>
+                    </>
+                )}
+                {!isAuthenticated && (
+                    <Button color="inherit" component={Link} to="/login">
+                        Authenticate
+                    </Button>
+                )}
             </Toolbar>
         </AppBar>
     )

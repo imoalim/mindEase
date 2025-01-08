@@ -1,10 +1,11 @@
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { Button, Box, Typography, Paper, TextField } from "@mui/material"
 import NavBar from "../components/NavBar.jsx"
 import loginImage from "@/assets/pictures/login.svg"
 import axios from "axios"
 import {useAuth} from "../services/AuthProvider.jsx"
 import {Link, useNavigate} from "react-router-dom"
+import client from "../axios/APIinitializer.jsx";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("")
@@ -13,9 +14,11 @@ const LoginPage = () => {
     const {login, isAuthenticated} = useAuth()
     const navigate = useNavigate()
 
-    if(isAuthenticated) {
-        navigate('/')
-    }
+    useEffect(() => {
+        if(isAuthenticated) {
+            navigate('/')
+        }
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -28,8 +31,26 @@ const LoginPage = () => {
                 }}
             );
             login(response.data.accessToken);
-            navigate('/')
-            // Redirect or show success message
+
+            setTimeout(async() => {
+                await client.get("api/users/me").then(response => {
+                    const user = response.data;
+
+                    if(user.verificationStep == 1) {
+                        navigate('/complete-profile')
+                    } else if(user.verificationStep == 2) {
+                        if (user.selectedRole !== 'USER') {
+                            navigate('/')
+                        } else {
+                            navigate('/questionnaire')
+                        }
+                    } else {
+                        navigate('/');
+                    }
+                }).catch(
+                    (e) => setError("An error occurred")
+                )
+            }, 100)
         } catch (err) {
             setError(err.response.data.errors[0].error  === "INVALID_CREDENTIALS" ? "Invalid credentials" : "An error occurred");
         }
