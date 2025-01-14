@@ -24,40 +24,41 @@ services:
       timeout: 5s
       retries: 5
 
-#
-#  app:
-#    build:
-#      context: ./backend
-#    container_name: dms_server
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      SPRING_PROFILES_ACTIVE: "default"
-#      SPRING_DATASOURCE_URL: ${DB_URL}
-#      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
-#      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-#      SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
-#    volumes:
-#      - ./logs:/app/logs
-#    networks:
-#      - mindease_network
-#
-#    depends_on:
-#      db:
-#        condition: service_healthy
+
+  app:
+    build:
+      context: ./backend
+    container_name: dms_server
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: "default"
+      SPRING_DATASOURCE_URL: ${DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env  # Mount the .env file
+    networks:
+      - mindease_network
+
+    depends_on:
+      db:
+        condition: service_healthy
 
   #TODO: Frontend needs still fixing
-#  frontend:
-#    build:
-#      context: ./frontend
-#    ports:
-#      - "5173:5173"
-#    volumes:
-#      - ./frontend:/app
-#    working_dir: /app
-#    command: [ "npm", "start" ]
-#    depends_on:
-#      - app
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80" # Map Nginx serving port to localhost
+    volumes:
+      - .:/app
+      - ./node_modules:/app/node_modules
+    depends_on:
+      - app
 
 volumes:
   db_data:

@@ -11,9 +11,8 @@ import {
     Button,
     Alert
 } from '@mui/material';
-import NavBar from '@/Components/NavBar'
+import NavBar from '@/components/NavBar'
 import '../css/Questionnaire.css'
-import client from "../axios/APIinitializer.jsx";
 import {useAuth} from "../services/AuthProvider.jsx";
 
 const questions = [
