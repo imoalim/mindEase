@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Grid, Typography, Card, CardContent } from '@mui/material'
-import NavBar from '@/Components/NavBar'
+import NavBar from '@/components/NavBar'
 import '@/App.css'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
